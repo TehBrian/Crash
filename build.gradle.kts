@@ -59,6 +59,8 @@ tasks {
             }
         }
 
+        archiveFileName.set("Crash-${archiveVersion.get()}.jar")
+
         dependencies {
             exclude(dependency("com.google.guava:"))
             exclude(dependency("com.google.errorprone:"))
