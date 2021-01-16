@@ -2,7 +2,6 @@ package dev.kscott.crash.game;
 
 import com.google.common.hash.Hashing;
 import dev.kscott.utils.MathUtils;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.math.BigDecimal;
@@ -16,7 +15,7 @@ public class CrashProvider {
     /**
      * The starting seed of the crash game.
      */
-    private final @NonNull String clientSeed;
+    private final @NonNull String gameSeed;
 
     /**
      * The current hash of the game.
@@ -28,7 +27,7 @@ public class CrashProvider {
      */
     @SuppressWarnings("UnstableApiUsage")
     public CrashProvider() {
-        this.clientSeed = Hashing.sha256().hashString("placeholder", StandardCharsets.UTF_8).toString();
+        this.gameSeed = Hashing.sha256().hashString("placeholder", StandardCharsets.UTF_8).toString();
         currentHash = generateHash();
     }
 
@@ -39,7 +38,7 @@ public class CrashProvider {
     @SuppressWarnings("UnstableApiUsage")
     public double generateCrashPoint() {
         final @NonNull String hash = Hashing.hmacSha256(generateHash().getBytes(StandardCharsets.UTF_8))
-                .hashString(clientSeed, StandardCharsets.UTF_8).toString();
+                .hashString(gameSeed, StandardCharsets.UTF_8).toString();
 
         // 1/51 games will auto crash at 1.
         if (MathUtils.hashDivisible(hash, 51)) {
