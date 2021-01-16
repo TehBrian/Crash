@@ -21,7 +21,8 @@ public class GameManager {
 
     /**
      * Constructs GameManager.
-     * @param plugin JavaPlugin reference.
+     *
+     * @param plugin        JavaPlugin reference.
      * @param crashProvider CrashProvider reference.
      */
     @Inject
@@ -58,7 +59,6 @@ public class GameManager {
          */
         POST_GAME
     }
-
 
 
 }
