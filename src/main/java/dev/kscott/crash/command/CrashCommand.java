@@ -3,6 +3,7 @@ package dev.kscott.crash.command;
 import cloud.commandframework.Command;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.paper.PaperCommandManager;
+import com.google.inject.Inject;
 import dev.kscott.crash.game.CrashProvider;
 import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -27,6 +28,7 @@ public class CrashCommand {
      *
      * @param commandManager PaperCommandManager reference.
      */
+    @Inject
     public CrashCommand(
             final @NonNull PaperCommandManager<CommandSender> commandManager,
             final @NonNull CrashProvider crashProvider
