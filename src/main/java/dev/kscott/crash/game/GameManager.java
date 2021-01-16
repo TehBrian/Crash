@@ -38,7 +38,6 @@ public class GameManager {
      * @param plugin        JavaPlugin reference.
      * @param crashProvider CrashProvider reference.
      */
-    @Inject
     public GameManager(
             final @NonNull JavaPlugin plugin,
             final @NonNull CrashProvider crashProvider,
