@@ -36,8 +36,10 @@ public class CrashProvider {
      * Generates a crash point.
      * @return crash point as a {@code double}.
      */
+    @SuppressWarnings("UnstableApiUsage")
     public double generateCrashPoint() {
-        final @NonNull String hash = generateHash();
+        final @NonNull String hash = Hashing.hmacSha256(generateHash().getBytes(StandardCharsets.UTF_8))
+                .hashString(clientSeed, StandardCharsets.UTF_8).toString();
 
         // 1/51 games will auto crash at 1.
         if (MathUtils.hashDivisible(hash, 51)) {
