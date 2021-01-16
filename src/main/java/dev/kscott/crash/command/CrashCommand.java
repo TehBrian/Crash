@@ -17,6 +17,9 @@ public class CrashCommand {
      */
     private final @NonNull PaperCommandManager<CommandSender> commandManager;
 
+    /**
+     * CrashProvider reference.
+     */
     private final @NonNull CrashProvider crashProvider;
 
     /**
