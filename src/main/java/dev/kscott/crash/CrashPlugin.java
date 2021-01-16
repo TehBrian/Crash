@@ -2,7 +2,7 @@ package dev.kscott.crash;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Crash extends JavaPlugin {
+public final class CrashPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
