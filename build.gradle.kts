@@ -24,6 +24,10 @@ repositories {
         name = "sonatype"
         url = uri("https://oss.sonatype.org/content/groups/public/")
     }
+    maven {
+        name = "jitpack"
+        url = uri("https://jitpack.io")
+    }
 }
 
 dependencies {
@@ -31,12 +35,14 @@ dependencies {
     compileOnlyApi("com.google.guava:guava:21.0")
 
     compileOnly("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT")
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
 
     implementation("com.google.inject:guice:5.0.0-BETA-1")
     implementation("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
-    implementation("cloud.commandframework:cloud-paper:1.3.0")
+    implementation("cloud.commandframework:cloud-paper:1.4.0")
     implementation("org.spongepowered:configurate-hocon:4.0.0")
     implementation("net.kyori:adventure-text-minimessage:4.0.0-SNAPSHOT")
+    implementation("com.github.stefvanschie.inventoryframework:IF:0.9.1")
 }
 
 tasks {
@@ -66,7 +72,8 @@ tasks {
                 "org.spongepowered.configurate",
                 "cloud.commandframework",
                 "net.kyori.adventure",
-                "net.kyori.examination"
+                "net.kyori.examination",
+                "com.github.stevanschie.inventoryframework"
         )
     }
 
