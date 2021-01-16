@@ -1,4 +1,4 @@
-package dev.kscott.utils;
+package dev.kscott.crash.utils;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 

@@ -1,7 +1,7 @@
 package dev.kscott.crash.game;
 
 import com.google.common.hash.Hashing;
-import dev.kscott.utils.MathUtils;
+import dev.kscott.crash.utils.MathUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.math.BigDecimal;
