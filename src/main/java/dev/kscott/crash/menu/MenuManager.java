@@ -9,9 +9,15 @@ import dev.kscott.crash.game.GameManager;
 import dev.kscott.crash.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handles the creation and displaying of menus.
@@ -34,12 +40,16 @@ public class MenuManager {
     private final @NonNull GameManager gameManager;
 
     /**
+     * A List of GameMenu that holds all opened menus.
+     */
+    private final @NonNull List<GameMenu> openInventories;
+
+    /**
      * Constructs MenuManager.
      *
      * @param plugin         JavaPlugin reference.
      * @param commandManager PaperCommandManager reference.
      */
-    @Inject
     public MenuManager(
             final @NonNull JavaPlugin plugin,
             final @NonNull PaperCommandManager<CommandSender> commandManager,
@@ -48,35 +58,34 @@ public class MenuManager {
         this.plugin = plugin;
         this.commandManager = commandManager;
         this.gameManager = gameManager;
+        this.openInventories = new ArrayList<>();
+    }
+
+    public void updateMenus() {
+        for (final @NonNull GameMenu gameMenu : openInventories) {
+            final @NonNull HumanEntity entity = gameMenu.getViewers().get(0);
+            if (entity instanceof Player) {
+                showGameMenu((Player) entity);
+            }
+        }
+    }
+
+    public void showGameMenu(final @NonNull Player player) {
+        this.createGameMenu(player).show(player);
     }
 
     private Gui createGameMenu(final @NonNull Player player) {
         final GameManager.GameState gameState = this.gameManager.getGameState();
 
-        if (gameState == GameManager.GameState.NOT_RUNNING) {
-            return createNotRunningGui(player);
+        if (gameState == GameManager.GameState.PRE_GAME) {
+            return new PreGameMenu(player, this.gameManager);
         }
 
-        return null;
+        return new NotRunningMenu(player);
     }
 
-    /**
-     * Creates the {@link Gui} for {@link dev.kscott.crash.game.GameManager.GameState#NOT_RUNNING}.
-     * @return the {@link Gui}.
-     */
-    private Gui createNotRunningGui(final @NonNull Player player) {
-        final @NonNull ChestGui chestGui = new ChestGui(6, "Crash: not running");
-
-        final @NonNull StaticPane pane = new StaticPane(0, 0, 9, 6);
-        pane.fillWith(
-                new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
-                        .name("")
-                        .build()
-        );
-
-        chestGui.addPane(pane);
-
-        return chestGui;
+    public void inventoryClosed(final @NonNull Inventory inventory) {
+        this.openInventories.removeIf(menu -> menu.getInventory() == inventory);
     }
 
 }
