@@ -7,6 +7,7 @@ import dev.kscott.crash.inject.CommandModule;
 import dev.kscott.crash.inject.GameModule;
 import dev.kscott.crash.inject.MenuModule;
 import dev.kscott.crash.inject.PluginModule;
+import dev.kscott.crash.listeners.InventoryCloseListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -28,5 +29,7 @@ public final class CrashPlugin extends JavaPlugin {
         );
 
         injector.getInstance(CrashCommand.class);
+
+        this.getServer().getPluginManager().registerEvents(injector.getInstance(InventoryCloseListener.class), this);
     }
 }
