@@ -186,6 +186,30 @@ public class ItemBuilder {
     }
 
     /**
+     * Add a line of lore to the ItemStack.
+     *
+     * @param lines the lines to add to the ItemStacks lore
+     * @return the builder
+     */
+    public @NonNull ItemBuilder loreAdd(final @NonNull List<Component> lines) {
+        if (this.meta != null) {
+            List<BaseComponent[]> lore = this.meta.getLoreComponents();
+
+            if (lore == null) {
+                lore = new ArrayList<>();
+            }
+
+            for (final @NonNull Component component : lines) {
+                lore.add(BungeeComponentSerializer.legacy().serialize(component));
+            }
+
+            this.meta.setLoreComponents(lore);
+        }
+
+        return this;
+    }
+
+    /**
      * Remove all lines of an ItemStacks lore.
      *
      * @return the builder
