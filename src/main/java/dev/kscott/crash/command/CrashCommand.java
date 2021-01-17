@@ -48,6 +48,14 @@ public class CrashCommand {
                 builder.handler(this::handleCrash)
                         .permission("crash.command.use")
         );
+
+        this.commandManager.command(
+                builder.literal("start")
+                        .handler(ctx -> {
+                            this.gameManager.startGame();
+                        })
+                        .permission("crash.command.start")
+        );
     }
 
     /**
