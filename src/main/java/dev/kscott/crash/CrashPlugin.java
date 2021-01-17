@@ -2,6 +2,7 @@ package dev.kscott.crash;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import dev.kscott.crash.command.CrashAdminCommand;
 import dev.kscott.crash.command.CrashCommand;
 import dev.kscott.crash.inject.CommandModule;
 import dev.kscott.crash.inject.GameModule;
@@ -27,6 +28,7 @@ public final class CrashPlugin extends JavaPlugin {
         );
 
         injector.getInstance(CrashCommand.class);
+        injector.getInstance(CrashAdminCommand.class);
 
         this.getServer().getPluginManager().registerEvents(injector.getInstance(InventoryCloseListener.class), this);
     }
