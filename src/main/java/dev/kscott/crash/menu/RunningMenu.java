@@ -33,7 +33,7 @@ public class RunningMenu extends GameMenu {
                 new ItemBuilder(Material.YELLOW_STAINED_GLASS_PANE)
                         .name(Component.text(gameManager.getCurrentMultiplier()).color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD))
                         .build()
-        ), 5, 2);
+        ), 4, 2);
 
         addPane(fgPane);
         addPane(bgPane);
