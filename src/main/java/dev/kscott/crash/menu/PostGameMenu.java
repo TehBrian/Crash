@@ -1,14 +1,12 @@
 package dev.kscott.crash.menu;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
-import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import dev.kscott.crash.game.GameManager;
 import dev.kscott.crash.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -30,7 +28,7 @@ public class PostGameMenu extends GameMenu {
 
         fgPane.addItem(new GuiItem(
                 new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
-                        .name(Component.text("Crashed @ "+gameManager.getCrashPoint()).decorate(TextDecoration.BOLD))
+                        .name(Component.text("Crashed @ " + gameManager.getCrashPoint()).decorate(TextDecoration.BOLD))
                         .build()
         ), 4, 2);
 
