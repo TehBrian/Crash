@@ -23,6 +23,11 @@ public class GameManager {
     private static final int COUNTDOWN_TIME = 10;
 
     /**
+     * How long will the post-game menu run?
+     */
+    public static final int POST_GAME_TIME = 5;
+
+    /**
      * How often will the crash game tick? (in Minecrft ticks)
      */
     private static final int GAME_TICK = 5;
@@ -162,7 +167,15 @@ public class GameManager {
      */
     private void runPostGame() {
         this.gameState = GameState.POST_GAME;
-        runPreGame();
+
+        this.menuManager.updateMenus();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                runPreGame();
+            }
+        }.runTaskLater(plugin, 20 * POST_GAME_TIME);
     }
 
     /**

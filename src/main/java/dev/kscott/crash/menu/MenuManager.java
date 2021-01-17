@@ -81,6 +81,8 @@ public class MenuManager {
             return new PreGameMenu(player, this.gameManager);
         } else if (gameState == GameManager.GameState.RUNNING) {
             return new RunningMenu(player, this.gameManager);
+        } else if (gameState == GameManager.GameState.POST_GAME) {
+            return new PostGameMenu(player, this.gameManager);
         }
 
         return new NotRunningMenu(player);
