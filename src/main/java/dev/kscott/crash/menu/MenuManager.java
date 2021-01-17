@@ -60,7 +60,6 @@ public class MenuManager {
         for (final @NonNull InventoryHolder holder : openInventories) {
             final @NonNull HumanEntity entity = holder.getInventory().getViewers().get(0);
             if (entity instanceof Player) {
-                this.plugin.getServer().broadcast(((Player) entity).getDisplayName(), "");
                 showGameMenu((Player) entity);
             }
         }
