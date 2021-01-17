@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -30,11 +31,6 @@ public class GameManager {
      * How fast will the multiplier increase?
      */
     private static final double CRASH_SPEED_MULTIPLIER = 0.02;
-
-    /**
-     * The decimal formatter.
-     */
-    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00");
 
     /**
      * JavaPlugin reference.
@@ -149,11 +145,7 @@ public class GameManager {
             @Override
             public void run() {
                 if (crashPoint > currentMultiplier) {
-                    try {
-                        currentMultiplier += DECIMAL_FORMAT.parse(DECIMAL_FORMAT.format(currentMultiplier * CRASH_SPEED_MULTIPLIER)).doubleValue();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                    currentMultiplier = BigDecimal.valueOf(currentMultiplier + (currentMultiplier * CRASH_SPEED_MULTIPLIER)).setScale(2, RoundingMode.HALF_DOWN).doubleValue();
                 } else {
                     // game crashed
                     cancel();
