@@ -3,6 +3,8 @@ package dev.kscott.crash.game;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -13,14 +15,21 @@ import java.util.UUID;
 public class BetManager {
 
     /**
+     * GameManager reference.
+     */
+    private final @NonNull GameManager gameManager;
+
+    /**
      * The Map which stores the player bets.
      */
-    private final @NonNull Map<UUID, Long> betMap;
+    private final @NonNull Map<UUID, Double> betMap;
 
     /**
      * Constructs BetManager.
+     * @param gameManager GameManager reference.
      */
-    public BetManager() {
+    public BetManager(final @NonNull GameManager gameManager) {
+        this.gameManager = gameManager;
         this.betMap = new HashMap<>();
     }
 
@@ -30,7 +39,7 @@ public class BetManager {
      * @param player Player to place bet for.
      * @param bet    bet amount.
      */
-    public void placeBet(final @NonNull Player player, final long bet) {
+    public void placeBet(final @NonNull Player player, final double bet) {
         this.betMap.put(player.getUniqueId(), bet);
     }
 
@@ -40,8 +49,8 @@ public class BetManager {
      * @param player Player to get bet for.
      * @return the amount the player bet.
      */
-    public long getBet(final @NonNull Player player) {
-        return this.betMap.getOrDefault(player.getUniqueId(), 0L);
+    public double getBet(final @NonNull Player player) {
+        return this.betMap.getOrDefault(player.getUniqueId(), 0D);
     }
 
     /**
@@ -60,6 +69,18 @@ public class BetManager {
      */
     public boolean didBet(final @NonNull Player player) {
         return this.betMap.containsKey(player.getUniqueId());
+    }
+
+    /**
+     * @param player Player to check.
+     * @return the value of their cashout at the current multiplier.
+     */
+    public double getCashout(final @NonNull Player player) {
+        if (!this.didBet(player)) {
+            return 0;
+        }
+
+        return BigDecimal.valueOf(this.getBet(player) * this.gameManager.getCurrentMultiplier()).setScale(2, RoundingMode.HALF_DOWN).doubleValue();
     }
 
     /**
