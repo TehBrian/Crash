@@ -33,7 +33,7 @@ public class GameManager {
     /**
      * How fast will the multiplier increase?
      */
-    private static final double CRASH_SPEED_MULTIPLIER = 0.02;
+    private static final double CRASH_SPEED_MULTIPLIER = 0.03;
 
     /**
      * JavaPlugin reference.
