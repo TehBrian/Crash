@@ -1,6 +1,7 @@
 package dev.kscott.crash.game;
 
 import cloud.commandframework.paper.PaperCommandManager;
+import dev.kscott.crash.menu.MenuManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -26,6 +27,11 @@ public class GameManager {
     private final @NonNull PaperCommandManager<CommandSender> commandManager;
 
     /**
+     * MenuManager reference.
+     */
+    private final @NonNull MenuManager menuManager;
+
+    /**
      * The state of the game. ({@link GameState})
      */
     private @NonNull GameState gameState;
@@ -44,6 +50,8 @@ public class GameManager {
         this.plugin = plugin;
         this.crashProvider = crashProvider;
         this.commandManager = commandManager;
+
+        this.menuManager = new MenuManager(plugin, commandManager, this);
 
         this.gameState = GameState.NOT_RUNNING;
     }
@@ -90,6 +98,13 @@ public class GameManager {
      */
     public @NonNull GameState getGameState() {
         return this.gameState;
+    }
+
+    /**
+     * @return {@link this#menuManager}
+     */
+    public @NonNull MenuManager getMenuManager() {
+        return this.menuManager;
     }
 
     /**
