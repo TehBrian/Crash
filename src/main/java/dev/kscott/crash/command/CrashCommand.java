@@ -54,9 +54,7 @@ public class CrashCommand {
 
         this.commandManager.command(
                 builder.literal("start")
-                        .handler(ctx -> {
-                            this.gameManager.startGame();
-                        })
+                        .handler(ctx -> this.gameManager.startGame())
                         .permission("crash.command.start")
         );
     }
@@ -69,7 +67,6 @@ public class CrashCommand {
     private void handleCrash(final @NonNull CommandContext<CommandSender> context) {
         final @NonNull CommandSender sender = context.getSender();
         this.gameManager.getMenuManager().showGameMenu((Player) sender);
-        sender.sendMessage(Double.toString(crashProvider.generateCrashPoint()));
     }
 
 
