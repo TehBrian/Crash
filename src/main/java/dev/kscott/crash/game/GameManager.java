@@ -7,12 +7,34 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+
 /**
  * Manages the game state.
  */
 public class GameManager {
 
+    /**
+     * How long will the pre-game countdown take? (in seconds)
+     */
     private static final int COUNTDOWN_TIME = 10;
+
+    /**
+     * How often will the crash game tick? (in Minecrft ticks)
+     */
+    private static final int GAME_TICK = 5;
+
+    /**
+     * How fast will the multiplier increase?
+     */
+    private static final double CRASH_SPEED_MULTIPLIER = 0.02;
+
+    /**
+     * The decimal formatter.
+     */
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00");
 
     /**
      * JavaPlugin reference.
@@ -106,6 +128,8 @@ public class GameManager {
                     runGame();
                 }
 
+                plugin.getServer().broadcast(""+preGameCountdown, "");
+
                 menuManager.updateMenus();
                 preGameCountdown--;
             }
@@ -117,7 +141,28 @@ public class GameManager {
      */
     private void runGame() {
         this.gameState = GameState.RUNNING;
-        runPostGame();
+
+        this.currentMultiplier = 1;
+        this.crashPoint = this.crashProvider.generateCrashPoint();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (crashPoint > currentMultiplier) {
+                    try {
+                        currentMultiplier += DECIMAL_FORMAT.parse(DECIMAL_FORMAT.format(currentMultiplier * CRASH_SPEED_MULTIPLIER)).doubleValue();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // game crashed
+                    cancel();
+                    runPostGame();
+                }
+
+                menuManager.updateMenus();
+            }
+        }.runTaskTimer(plugin, 0, GAME_TICK);
     }
 
     /**
@@ -147,6 +192,20 @@ public class GameManager {
      */
     public int getPreGameCountdown() {
         return this.preGameCountdown;
+    }
+
+    /**
+     * @return {@link this#currentMultiplier}
+     */
+    public double getCurrentMultiplier() {
+        return currentMultiplier;
+    }
+
+    /**
+     * @return {@link this#crashPoint}
+     */
+    public double getCrashPoint() {
+        return crashPoint;
     }
 
     /**
