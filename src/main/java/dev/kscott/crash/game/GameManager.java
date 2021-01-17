@@ -4,12 +4,15 @@ import cloud.commandframework.paper.PaperCommandManager;
 import dev.kscott.crash.menu.MenuManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Manages the game state.
  */
 public class GameManager {
+
+    private static final int COUNTDOWN_TIME = 10;
 
     /**
      * JavaPlugin reference.
@@ -37,6 +40,21 @@ public class GameManager {
     private @NonNull GameState gameState;
 
     /**
+     * The current crash multiplier.
+     */
+    private double currentMultiplier;
+
+    /**
+     * The crash point.
+     */
+    private double crashPoint;
+
+    /**
+     * The countdown variable for pre-game.
+     */
+    private int preGameCountdown;
+
+    /**
      * Constructs GameManager.
      *
      * @param plugin        JavaPlugin reference.
@@ -52,6 +70,9 @@ public class GameManager {
         this.commandManager = commandManager;
 
         this.menuManager = new MenuManager(plugin, commandManager, this);
+
+        this.currentMultiplier = 0;
+        this.crashPoint = 0;
 
         this.gameState = GameState.NOT_RUNNING;
     }
@@ -74,7 +95,21 @@ public class GameManager {
      */
     private void runPreGame() {
         this.gameState = GameState.PRE_GAME;
-        runGame();
+
+        preGameCountdown = COUNTDOWN_TIME;
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (preGameCountdown <= 0) {
+                    cancel();
+                    runGame();
+                }
+
+                menuManager.updateMenus();
+                preGameCountdown--;
+            }
+        }.runTaskTimer(plugin, 0, 20);
     }
 
     /**
@@ -108,6 +143,13 @@ public class GameManager {
     }
 
     /**
+     * @return {@link this#preGameCountdown}
+     */
+    public int getPreGameCountdown() {
+        return this.preGameCountdown;
+    }
+
+    /**
      * Covers all possible game states.
      */
     public enum GameState {
@@ -132,6 +174,4 @@ public class GameManager {
          */
         POST_GAME
     }
-
-
 }
