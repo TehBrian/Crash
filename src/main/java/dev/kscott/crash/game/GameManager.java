@@ -56,6 +56,11 @@ public class GameManager {
     private final @NonNull MenuManager menuManager;
 
     /**
+     * BetManager reference.
+     */
+    private final @NonNull BetManager betManager;
+
+    /**
      * The state of the game. ({@link GameState})
      */
     private @NonNull GameState gameState;
@@ -91,6 +96,7 @@ public class GameManager {
         this.commandManager = commandManager;
 
         this.menuManager = new MenuManager(plugin, commandManager, this);
+        this.betManager = new BetManager();
 
         this.currentMultiplier = 0;
         this.crashPoint = 0;
@@ -186,6 +192,13 @@ public class GameManager {
      */
     public @NonNull MenuManager getMenuManager() {
         return this.menuManager;
+    }
+
+    /**
+     * @return {@link this#betManager}
+     */
+    public @NonNull BetManager getBetManager() {
+        return this.betManager;
     }
 
     /**
