@@ -26,8 +26,9 @@ public class BetManager {
 
     /**
      * Places a bet for a player.
+     *
      * @param player Player to place bet for.
-     * @param bet bet amount.
+     * @param bet    bet amount.
      */
     public void placeBet(final @NonNull Player player, final long bet) {
         this.betMap.put(player.getUniqueId(), bet);
@@ -35,6 +36,7 @@ public class BetManager {
 
     /**
      * Gets a bet for a player.
+     *
      * @param player Player to get bet for.
      * @return the amount the player bet.
      */
@@ -44,10 +46,20 @@ public class BetManager {
 
     /**
      * Removes a bet for a player
+     *
      * @param player player to remove bet for
      */
     public void removeBet(final @NonNull Player player) {
         this.betMap.remove(player.getUniqueId());
+    }
+
+
+    /**
+     * @param player Player to check.
+     * @return true if the player has a bet placed, false if not.
+     */
+    public boolean didBet(final @NonNull Player player) {
+        return this.betMap.containsKey(player.getUniqueId());
     }
 
     /**
@@ -56,7 +68,6 @@ public class BetManager {
     public void reset() {
         betMap.clear();
     }
-
 
 
 }
