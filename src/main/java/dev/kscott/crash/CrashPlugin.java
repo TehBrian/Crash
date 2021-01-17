@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import dev.kscott.crash.command.CrashCommand;
 import dev.kscott.crash.inject.CommandModule;
 import dev.kscott.crash.inject.GameModule;
+import dev.kscott.crash.inject.MenuModule;
 import dev.kscott.crash.inject.PluginModule;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -22,7 +23,8 @@ public final class CrashPlugin extends JavaPlugin {
         final @NonNull Injector injector = Guice.createInjector(
                 new PluginModule(this),
                 new CommandModule(this),
-                new GameModule()
+                new GameModule(),
+                new MenuModule()
         );
 
         injector.getInstance(CrashCommand.class);
