@@ -40,7 +40,7 @@ public class GameManager {
             final @NonNull JavaPlugin plugin,
             final @NonNull CrashProvider crashProvider,
             final @NonNull PaperCommandManager<CommandSender> commandManager
-            ) {
+    ) {
         this.plugin = plugin;
         this.crashProvider = crashProvider;
         this.commandManager = commandManager;
