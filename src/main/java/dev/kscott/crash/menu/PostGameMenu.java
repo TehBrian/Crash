@@ -5,6 +5,7 @@ import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import dev.kscott.crash.game.GameManager;
 import dev.kscott.crash.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -28,7 +29,11 @@ public class PostGameMenu extends GameMenu {
 
         fgPane.addItem(new GuiItem(
                 new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
-                        .name(Component.text("Crashed @ " + gameManager.getCrashPoint()).decorate(TextDecoration.BOLD))
+                        .name(Component.text("Crashed @ " + gameManager.getCrashPoint()+"x")
+                                .decorate(TextDecoration.BOLD)
+                                .color(NamedTextColor.RED)
+                                .decoration(TextDecoration.ITALIC, false)
+                        )
                         .build()
         ), 4, 2);
 
