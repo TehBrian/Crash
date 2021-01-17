@@ -4,6 +4,7 @@ import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import dev.kscott.crash.game.BetManager;
 import dev.kscott.crash.game.CrashProvider;
 import dev.kscott.crash.game.GameManager;
 import dev.kscott.crash.menu.MenuManager;
@@ -49,6 +50,16 @@ public class GameModule extends AbstractModule {
     @Singleton
     public @NonNull MenuManager provideMenuManager(final @NonNull GameManager gameManager) {
         return gameManager.getMenuManager();
+    }
+
+    /**
+     * @param gameManager GameManager reference.
+     * @return {@link BetManager}.
+     */
+    @Provides
+    @Singleton
+    public @NonNull BetManager provideBetManager(final @NonNull GameManager gameManager) {
+        return gameManager.getBetManager();
     }
 
 
