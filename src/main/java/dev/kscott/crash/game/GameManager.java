@@ -9,8 +9,6 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.ParseException;
 
 /**
  * Manages the game state.
@@ -129,7 +127,7 @@ public class GameManager {
                     runGame();
                 }
 
-                plugin.getServer().broadcast(""+preGameCountdown, "");
+                plugin.getServer().broadcast("" + preGameCountdown, "");
 
                 menuManager.updateMenus();
                 preGameCountdown--;
