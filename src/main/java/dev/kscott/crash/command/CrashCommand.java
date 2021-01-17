@@ -5,7 +5,9 @@ import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
 import dev.kscott.crash.game.CrashProvider;
+import dev.kscott.crash.game.GameManager;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
@@ -23,6 +25,8 @@ public class CrashCommand {
      */
     private final @NonNull CrashProvider crashProvider;
 
+    private final @NonNull GameManager gameManager;
+
     /**
      * Constructs CrashCommand.
      *
@@ -31,9 +35,11 @@ public class CrashCommand {
     @Inject
     public CrashCommand(
             final @NonNull PaperCommandManager<CommandSender> commandManager,
-            final @NonNull CrashProvider crashProvider
-    ) {
+            final @NonNull CrashProvider crashProvider,
+            final @NonNull GameManager gameManager
+            ) {
         this.commandManager = commandManager;
+        this.gameManager = gameManager;
         this.crashProvider = crashProvider;
 
         final Command.Builder<CommandSender> builder = this.commandManager.commandBuilder("crash");
@@ -51,6 +57,7 @@ public class CrashCommand {
      */
     private void handleCrash(final @NonNull CommandContext<CommandSender> context) {
         final @NonNull CommandSender sender = context.getSender();
+        this.gameManager.getMenuManager().showGameMenu((Player) sender);
         sender.sendMessage(Double.toString(crashProvider.generateCrashPoint()));
     }
 
