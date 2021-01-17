@@ -1,8 +1,6 @@
 package dev.kscott.crash.game;
 
-import cloud.commandframework.CommandManager;
 import cloud.commandframework.paper.PaperCommandManager;
-import com.google.inject.Inject;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -85,6 +83,13 @@ public class GameManager {
     private void runPostGame() {
         this.gameState = GameState.POST_GAME;
         runPreGame();
+    }
+
+    /**
+     * @return the {@link GameState}.
+     */
+    public @NonNull GameState getGameState() {
+        return this.gameState;
     }
 
     /**
