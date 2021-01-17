@@ -127,8 +127,6 @@ public class GameManager {
                     runGame();
                 }
 
-                plugin.getServer().broadcast("" + preGameCountdown, "");
-
                 menuManager.updateMenus();
                 preGameCountdown--;
             }
