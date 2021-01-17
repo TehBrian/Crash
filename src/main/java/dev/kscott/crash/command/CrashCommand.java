@@ -25,6 +25,9 @@ public class CrashCommand {
      */
     private final @NonNull CrashProvider crashProvider;
 
+    /**
+     * GameManager reference.
+     */
     private final @NonNull GameManager gameManager;
 
     /**
