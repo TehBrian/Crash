@@ -15,7 +15,7 @@ public class PausedMenu extends GameMenu {
      * @param player Player who's intended to view this inventory
      */
     public PausedMenu(final @NonNull Player player) {
-        super(6, "Crash: Paused");
+        super(6, "Crash");
 
         final @NonNull StaticPane pane = new StaticPane(0, 0, 9, 6);
 

@@ -19,7 +19,7 @@ public class PreGameMenu extends GameMenu {
             final @NonNull Player player,
             final @NonNull GameManager gameManager
     ) {
-        super(6, "Crash: Pre Game "+gameManager.getPreGameCountdown());
+        super(6, "Crash");
 
         final @NonNull StaticPane pane = new StaticPane(0, 0, 9, 6);
 

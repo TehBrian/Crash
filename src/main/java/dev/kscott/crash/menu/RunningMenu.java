@@ -20,7 +20,7 @@ public class RunningMenu extends GameMenu {
      * @param player Player who's intended to view this inventory
      */
     public RunningMenu(final @NonNull Player player, final @NonNull GameManager gameManager) {
-        super(6, "Crash: Running");
+        super(6, "Crash");
 
         final @NonNull StaticPane bgPane = new StaticPane(0, 0, 9, 6);
 

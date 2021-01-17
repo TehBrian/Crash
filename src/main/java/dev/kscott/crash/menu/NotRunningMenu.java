@@ -15,7 +15,7 @@ public class NotRunningMenu extends GameMenu {
      * @param player Player who's intended to view this inventory
      */
     public NotRunningMenu(final @NonNull Player player) {
-        super(6, "Crash: Not Running");
+        super(6, "Crash");
 
         final @NonNull StaticPane pane = new StaticPane(0, 0, 9, 6);
 
