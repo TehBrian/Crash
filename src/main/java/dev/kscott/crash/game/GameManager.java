@@ -151,13 +151,21 @@ public class GameManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (crashPoint > currentMultiplier) {
+                if (crashPoint >= currentMultiplier) {
                     currentMultiplier = BigDecimal.valueOf(currentMultiplier + (currentMultiplier * CRASH_SPEED_MULTIPLIER)).setScale(2, RoundingMode.HALF_DOWN).doubleValue();
+
+                    if (crashPoint <= currentMultiplier) {
+                        // game crashed
+                        cancel();
+                        runPostGame();
+                    }
+
                 } else {
                     // game crashed
                     cancel();
                     runPostGame();
                 }
+
 
                 menuManager.updateMenus();
             }
