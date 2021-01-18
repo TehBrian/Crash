@@ -12,5 +12,6 @@ public abstract class GameMenu extends ChestGui {
      */
     public GameMenu(int rows, @NonNull String title) {
         super(rows, title);
+        this.setOnGlobalClick(event -> event.setCancelled(true));
     }
 }
