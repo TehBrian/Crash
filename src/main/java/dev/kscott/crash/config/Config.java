@@ -16,6 +16,31 @@ import java.nio.file.Paths;
 public class Config {
 
     /**
+     * How many other bets to display on the crash icon?
+     */
+    private int otherPlayersListAmount = 5;
+
+    /**
+     * How long will the post-game menu run?
+     */
+    private int countdownTime = 10;
+
+    /**
+     * How long will the post-game menu run?
+     */
+    private int postGameTime = 5;
+
+    /**
+     * How often will the crash game tick? (in Minecrft ticks)
+     */
+    private int gameTick = 5;
+
+    /**
+     * How fast will the multiplier increase?
+     */
+    private double crashSpeedMultiplier = 0.03;
+
+    /**
      * JavaPlugin reference
      */
     private final @NonNull JavaPlugin plugin;
@@ -62,6 +87,27 @@ public class Config {
      * Loads Crash's configuration values
      */
     private void loadConfigurationValues() {
-
     }
+
+    public int getOtherPlayersListAmount() {
+        return otherPlayersListAmount;
+    }
+
+    public int getCountdownTime() {
+        return countdownTime;
+    }
+
+    public int getPostGameTime() {
+        return postGameTime;
+    }
+
+    public int getGameTick() {
+        return gameTick;
+    }
+
+    public double getCrashSpeedMultiplier() {
+        return crashSpeedMultiplier;
+    }
+
+
 }

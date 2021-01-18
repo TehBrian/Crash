@@ -17,26 +17,6 @@ import java.math.RoundingMode;
 public class GameManager {
 
     /**
-     * How long will the pre-game countdown take? (in seconds)
-     */
-    private static final int COUNTDOWN_TIME = 10;
-
-    /**
-     * How long will the post-game menu run?
-     */
-    public static final int POST_GAME_TIME = 5;
-
-    /**
-     * How often will the crash game tick? (in Minecrft ticks)
-     */
-    private static final int GAME_TICK = 5;
-
-    /**
-     * How fast will the multiplier increase?
-     */
-    private static final double CRASH_SPEED_MULTIPLIER = 0.03;
-
-    /**
      * JavaPlugin reference.
      */
     private final @NonNull JavaPlugin plugin;
@@ -132,7 +112,7 @@ public class GameManager {
     private void runPreGame() {
         this.gameState = GameState.PRE_GAME;
 
-        preGameCountdown = COUNTDOWN_TIME;
+        preGameCountdown = this.config.getCountdownTime();
 
         new BukkitRunnable() {
             @Override
@@ -161,7 +141,7 @@ public class GameManager {
             @Override
             public void run() {
                 if (crashPoint >= currentMultiplier) {
-                    currentMultiplier = BigDecimal.valueOf(currentMultiplier + (currentMultiplier * CRASH_SPEED_MULTIPLIER)).setScale(2, RoundingMode.HALF_DOWN).doubleValue();
+                    currentMultiplier = BigDecimal.valueOf(currentMultiplier + (currentMultiplier * config.getCrashSpeedMultiplier())).setScale(2, RoundingMode.HALF_DOWN).doubleValue();
 
                     if (crashPoint <= currentMultiplier) {
                         // game crashed
@@ -178,7 +158,7 @@ public class GameManager {
 
                 menuManager.updateMenus();
             }
-        }.runTaskTimer(plugin, 0, GAME_TICK);
+        }.runTaskTimer(plugin, 0, config.getGameTick());
     }
 
     /**
@@ -194,7 +174,7 @@ public class GameManager {
             public void run() {
                 runPreGame();
             }
-        }.runTaskLater(plugin, 20 * POST_GAME_TIME);
+        }.runTaskLater(plugin, 20 * config.getPostGameTime());
     }
 
     /**
