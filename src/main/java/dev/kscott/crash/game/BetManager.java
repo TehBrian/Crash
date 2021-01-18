@@ -34,6 +34,13 @@ public class BetManager {
     }
 
     /**
+     * @return A map of bets where the key is a player UUID and the value is how much they bet.
+     */
+    public @NonNull Map<UUID, Double> getBets() {
+        return new HashMap<>(this.betMap);
+    }
+
+    /**
      * Places a bet for a player.
      *
      * @param player Player to place bet for.
