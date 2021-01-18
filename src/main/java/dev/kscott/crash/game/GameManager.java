@@ -1,6 +1,7 @@
 package dev.kscott.crash.game;
 
 import cloud.commandframework.paper.PaperCommandManager;
+import dev.kscott.crash.config.Config;
 import dev.kscott.crash.menu.MenuManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -51,6 +52,11 @@ public class GameManager {
     private final @NonNull PaperCommandManager<CommandSender> commandManager;
 
     /**
+     * Config reference.
+     */
+    private final @NonNull Config config;
+
+    /**
      * MenuManager reference.
      */
     private final @NonNull MenuManager menuManager;
@@ -85,15 +91,18 @@ public class GameManager {
      *
      * @param plugin        JavaPlugin reference.
      * @param crashProvider CrashProvider reference.
+     * @param config        Config reference.
      */
     public GameManager(
             final @NonNull JavaPlugin plugin,
             final @NonNull CrashProvider crashProvider,
-            final @NonNull PaperCommandManager<CommandSender> commandManager
+            final @NonNull PaperCommandManager<CommandSender> commandManager,
+            final @NonNull Config config
     ) {
         this.plugin = plugin;
         this.crashProvider = crashProvider;
         this.commandManager = commandManager;
+        this.config = config;
 
         this.menuManager = new MenuManager(plugin, commandManager, this);
         this.betManager = new BetManager(this);
