@@ -16,7 +16,12 @@ import java.nio.file.Paths;
 public class Config {
 
     /**
-     * How many other bets to display on the crash icon?
+     * Should the bet list be displayed in the crash game menus?
+     */
+    private boolean showBetList = true;
+
+    /**
+     * How many bets to display on the crash icon bet list?
      */
     private int otherPlayersListAmount = 5;
 
