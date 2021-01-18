@@ -114,5 +114,7 @@ public class Config {
         return crashSpeedMultiplier;
     }
 
-
+    public boolean isShowBetList() {
+        return showBetList;
+    }
 }
