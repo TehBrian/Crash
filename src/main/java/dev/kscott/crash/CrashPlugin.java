@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import dev.kscott.crash.command.CrashAdminCommand;
 import dev.kscott.crash.command.CrashCommand;
 import dev.kscott.crash.inject.CommandModule;
+import dev.kscott.crash.inject.ConfigModule;
 import dev.kscott.crash.inject.GameModule;
 import dev.kscott.crash.inject.PluginModule;
 import dev.kscott.crash.listeners.InventoryCloseListener;
@@ -24,6 +25,7 @@ public final class CrashPlugin extends JavaPlugin {
         final @NonNull Injector injector = Guice.createInjector(
                 new PluginModule(this),
                 new CommandModule(this),
+                new ConfigModule(),
                 new GameModule()
         );
 
