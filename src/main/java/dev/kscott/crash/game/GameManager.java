@@ -3,10 +3,14 @@ package dev.kscott.crash.game;
 import cloud.commandframework.paper.PaperCommandManager;
 import dev.kscott.crash.config.Config;
 import dev.kscott.crash.menu.MenuManager;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -140,17 +144,22 @@ public class GameManager {
         new BukkitRunnable() {
             @Override
             public void run() {
+                boolean gameCrashed = false;
+
                 if (crashPoint >= currentMultiplier) {
                     currentMultiplier = BigDecimal.valueOf(currentMultiplier + (currentMultiplier * config.getCrashSpeedMultiplier())).setScale(2, RoundingMode.HALF_DOWN).doubleValue();
 
                     if (crashPoint <= currentMultiplier) {
                         // game crashed
-                        cancel();
-                        runPostGame();
+                        gameCrashed = true;
                     }
-
                 } else {
-                    // game crashed
+                    gameCrashed = true;
+                }
+
+                if (gameCrashed) {
+                    payout();
+                    betManager.reset();
                     cancel();
                     runPostGame();
                 }
@@ -175,6 +184,13 @@ public class GameManager {
                 runPreGame();
             }
         }.runTaskLater(plugin, 20 * config.getPostGameTime());
+    }
+
+    /**
+     * Pay out bets for players.
+     */
+    private void payout() {
+
     }
 
     /**
