@@ -65,6 +65,9 @@ public class MenuManager {
         this.config = config;
     }
 
+    /**
+     * Updates all open game menus.
+     */
     public void updateMenus() {
         for (final @NonNull InventoryHolder holder : openInventories) {
             final @NonNull HumanEntity entity = holder.getInventory().getViewers().get(0);
@@ -74,6 +77,10 @@ public class MenuManager {
         }
     }
 
+    /**
+     * Shows the active game menu to a player.
+     * @param player Player to show.
+     */
     public void showGameMenu(final @NonNull Player player) {
         final @NonNull ChestGui menu = this.createGameMenu(player);
 
@@ -82,6 +89,11 @@ public class MenuManager {
         menu.show(player);
     }
 
+    /**
+     * Creates the game menu for a player.
+     * @param player Player who is intended to see this.
+     * @return The game menu.
+     */
     private ChestGui createGameMenu(final @NonNull Player player) {
         final GameManager.GameState gameState = this.gameManager.getGameState();
 
@@ -96,6 +108,10 @@ public class MenuManager {
         return new NotRunningMenu(player);
     }
 
+    /**
+     * Removes a menu from the inventory list.
+     * @param inventory Inventory to remove.
+     */
     public void inventoryClosed(final @NonNull Inventory inventory) {
         this.openInventories.removeIf(menu -> menu.getInventory() == inventory);
     }
