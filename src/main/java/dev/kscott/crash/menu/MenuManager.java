@@ -2,6 +2,7 @@ package dev.kscott.crash.menu;
 
 import cloud.commandframework.paper.PaperCommandManager;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
+import dev.kscott.crash.config.Config;
 import dev.kscott.crash.game.GameManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
@@ -18,6 +19,11 @@ import java.util.List;
  * Handles the creation and displaying of menus.
  */
 public class MenuManager {
+
+    /**
+     * Config reference.
+     */
+    private final @NonNull Config config;
 
     /**
      * JavaPlugin reference.
@@ -44,16 +50,19 @@ public class MenuManager {
      *
      * @param plugin         JavaPlugin reference.
      * @param commandManager PaperCommandManager reference.
+     * @param config         Config reference.
      */
     public MenuManager(
             final @NonNull JavaPlugin plugin,
             final @NonNull PaperCommandManager<CommandSender> commandManager,
-            final @NonNull GameManager gameManager
+            final @NonNull GameManager gameManager,
+            final @NonNull Config config
     ) {
         this.plugin = plugin;
         this.commandManager = commandManager;
         this.gameManager = gameManager;
         this.openInventories = new ArrayList<>();
+        this.config = config;
     }
 
     public void updateMenus() {
@@ -77,9 +86,9 @@ public class MenuManager {
         final GameManager.GameState gameState = this.gameManager.getGameState();
 
         if (gameState == GameManager.GameState.PRE_GAME) {
-            return new PreGameMenu(player, this.gameManager);
+            return new PreGameMenu(player, this.gameManager, config);
         } else if (gameState == GameManager.GameState.RUNNING) {
-            return new RunningMenu(player, this.gameManager);
+            return new RunningMenu(player, this.gameManager, config);
         } else if (gameState == GameManager.GameState.POST_GAME) {
             return new PostGameMenu(player, this.gameManager);
         }

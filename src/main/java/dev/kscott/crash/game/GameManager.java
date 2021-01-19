@@ -84,7 +84,7 @@ public class GameManager {
         this.commandManager = commandManager;
         this.config = config;
 
-        this.menuManager = new MenuManager(plugin, commandManager, this);
+        this.menuManager = new MenuManager(plugin, commandManager,this, config);
         this.betManager = new BetManager(this);
 
         this.currentMultiplier = 0;
