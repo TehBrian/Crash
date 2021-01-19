@@ -11,7 +11,7 @@ import java.io.File;
 import java.nio.file.Paths;
 
 /**
- * Stores the Quantum configuration and handles the loading and registration of rulesets
+ * Stores the general Crash config data.
  */
 public class Config {
 
@@ -46,12 +46,12 @@ public class Config {
     private double crashSpeedMultiplier = 0.03;
 
     /**
-     * JavaPlugin reference
+     * JavaPlugin reference.
      */
     private final @NonNull JavaPlugin plugin;
 
     /**
-     * The root quantum.conf config node
+     * The root config.conf config node.
      */
     private @MonotonicNonNull CommentedConfigurationNode root;
 
@@ -74,7 +74,7 @@ public class Config {
     }
 
     /**
-     * Loads the config into the {@link this.root} node
+     * Loads the config into the {@link this.root} node.
      */
     private void loadConfig() {
         final HoconConfigurationLoader loader = HoconConfigurationLoader.builder()
@@ -89,31 +89,49 @@ public class Config {
     }
 
     /**
-     * Loads Crash's configuration values
+     * Loads Crash's configuration values.
      */
     private void loadConfigurationValues() {
     }
 
+    /**
+     * @return {@link this#otherPlayersListAmount}
+     */
     public int getOtherPlayersListAmount() {
         return otherPlayersListAmount;
     }
 
+    /**
+     * @return {@link this#countdownTime}
+     */
     public int getCountdownTime() {
         return countdownTime;
     }
 
+    /**
+     * @return {@link this#postGameTime}
+     */
     public int getPostGameTime() {
         return postGameTime;
     }
 
+    /**
+     * @return {@link this#gameTick}
+     */
     public int getGameTick() {
         return gameTick;
     }
 
+    /**
+     * @return {@link this#crashSpeedMultiplier}
+     */
     public double getCrashSpeedMultiplier() {
         return crashSpeedMultiplier;
     }
 
+    /**
+     * @return {@link this#showBetList}
+     */
     public boolean isShowBetList() {
         return showBetList;
     }
