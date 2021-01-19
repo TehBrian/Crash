@@ -103,6 +103,8 @@ public class PreGameMenu extends GameMenu {
             break;
         }
 
+        lore.add(Component.text("/crash <bet> to place a bet!"));
+
         if (config.isShowBetList()) {
             if (gameManager.getBetManager().getBets().size() != 0) {
                 lore.add(

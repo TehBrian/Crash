@@ -53,7 +53,7 @@ public class RunningMenu extends GameMenu {
                 loreList.add(
                         Component.text(" ".repeat(10))
                                 .style(Style.style(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false).decorate(TextDecoration.STRIKETHROUGH))
-                                .append(Component.text("BETS").color(NamedTextColor.AQUA).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false))
+                                .append(Component.text(" BETS ").color(NamedTextColor.AQUA).decoration(TextDecoration.STRIKETHROUGH, false).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false))
                                 .append(Component.text(" ".repeat(10)).style(Style.style(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false).decorate(TextDecoration.STRIKETHROUGH)))
                 );
 
