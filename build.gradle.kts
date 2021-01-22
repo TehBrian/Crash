@@ -38,7 +38,7 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
 
     implementation("com.google.inject:guice:5.0.0-BETA-1")
-    implementation("net.kyori:adventure-platform-bukkit:4.4.0")
+    implementation("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
     implementation("cloud.commandframework:cloud-paper:1.4.0")
     implementation("org.spongepowered:configurate-hocon:4.0.0")
     implementation("net.kyori:adventure-text-minimessage:4.0.0-SNAPSHOT")
