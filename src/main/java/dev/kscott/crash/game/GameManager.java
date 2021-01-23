@@ -2,6 +2,7 @@ package dev.kscott.crash.game;
 
 import cloud.commandframework.paper.PaperCommandManager;
 import dev.kscott.crash.config.Config;
+import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.menu.MenuManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -76,19 +77,21 @@ public class GameManager {
      * @param plugin        JavaPlugin reference.
      * @param crashProvider CrashProvider reference.
      * @param config        Config reference.
+     * @param lang          Lang reference.
      */
     public GameManager(
             final @NonNull JavaPlugin plugin,
             final @NonNull CrashProvider crashProvider,
             final @NonNull PaperCommandManager<CommandSender> commandManager,
-            final @NonNull Config config
+            final @NonNull Config config,
+            final @NonNull Lang lang
     ) {
         this.plugin = plugin;
         this.crashProvider = crashProvider;
         this.commandManager = commandManager;
         this.config = config;
 
-        this.menuManager = new MenuManager(plugin, commandManager,this, config);
+        this.menuManager = new MenuManager(plugin, commandManager,this, config, lang);
         this.betManager = new BetManager(this);
 
         this.currentMultiplier = 0;
@@ -144,20 +147,12 @@ public class GameManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-                boolean gameCrashed = false;
-
-                if (crashPoint >= currentMultiplier) {
+                // thanks kevin u straight g
+                if (crashPoint > currentMultiplier) {
                     currentMultiplier = BigDecimal.valueOf(currentMultiplier + (currentMultiplier * config.getCrashSpeedMultiplier())).setScale(2, RoundingMode.HALF_DOWN).doubleValue();
-
-                    if (crashPoint <= currentMultiplier) {
-                        // game crashed
-                        gameCrashed = true;
-                    }
-                } else {
-                    gameCrashed = true;
                 }
 
-                if (gameCrashed) {
+                if (crashPoint < currentMultiplier) {
                     payout();
                     betManager.reset();
                     cancel();

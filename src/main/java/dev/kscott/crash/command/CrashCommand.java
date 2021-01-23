@@ -7,6 +7,7 @@ import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
+import dev.kscott.crash.exception.NotEnoughBalanceException;
 import dev.kscott.crash.game.CrashProvider;
 import dev.kscott.crash.game.GameManager;
 import org.bukkit.command.CommandSender;
@@ -119,6 +120,8 @@ public class CrashCommand {
             this.gameManager.getBetManager().placeBet(player, bet);
         } catch (final @NonNull NumberFormatException ex) {
             sender.sendMessage("oopsy woopsy that isnt a number");
+        } catch (final @NonNull NotEnoughBalanceException ex) {
+            sender.sendMessage("u dont got that kinda straps g");
         }
 
     }

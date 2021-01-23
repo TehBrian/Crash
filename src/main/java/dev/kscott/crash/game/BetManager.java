@@ -1,7 +1,12 @@
 package dev.kscott.crash.game;
 
+import dev.kscott.crash.exception.NotEnoughBalanceException;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,6 +20,11 @@ import java.util.UUID;
 public class BetManager {
 
     /**
+     * Vault Economy API.
+     */
+    private final @NonNull Economy economy;
+
+    /**
      * GameManager reference.
      */
     private final @NonNull GameManager gameManager;
@@ -25,12 +35,27 @@ public class BetManager {
     private final @NonNull Map<UUID, Double> betMap;
 
     /**
+     * The Map which stores cashed out bets.
+     */
+    private final @NonNull Map<UUID, Double> cashoutMap;
+
+    /**
      * Constructs BetManager.
      * @param gameManager GameManager reference.
      */
     public BetManager(final @NonNull GameManager gameManager) {
         this.gameManager = gameManager;
         this.betMap = new HashMap<>();
+        this.cashoutMap = new HashMap<>();
+
+        final @Nullable RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+
+        if (rsp == null) {
+            throw new RuntimeException("The Vault Economy API could not be found!");
+        }
+
+        this.economy = rsp.getProvider();
+
     }
 
     /**
@@ -41,13 +66,22 @@ public class BetManager {
     }
 
     /**
-     * Places a bet for a player.
+     * Places a bet for a player and withdraws the bet from their account.
      *
      * @param player Player to place bet for.
      * @param bet    bet amount.
+     * @throws NotEnoughBalanceException thrown if {@code player} does not have enough balance to place {@code bet}.
      */
-    public void placeBet(final @NonNull Player player, final double bet) {
-        this.betMap.put(player.getUniqueId(), bet);
+    public void placeBet(final @NonNull Player player, final double bet) throws NotEnoughBalanceException {
+        final double playerBalance = economy.getBalance(player);
+
+        if (playerBalance >= bet) {
+            this.betMap.put(player.getUniqueId(), bet);
+            economy.withdrawPlayer(player, bet);
+        } else {
+            throw new NotEnoughBalanceException(player, bet, playerBalance);
+        }
+
     }
 
     /**
@@ -94,7 +128,8 @@ public class BetManager {
      * Removes all placed bets from the map.
      */
     public void reset() {
-        betMap.clear();
+        this.cashoutMap.clear();
+        this.betMap.clear();
     }
 
 

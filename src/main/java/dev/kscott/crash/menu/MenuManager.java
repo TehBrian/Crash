@@ -3,6 +3,7 @@ package dev.kscott.crash.menu;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import dev.kscott.crash.config.Config;
+import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.game.GameManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
@@ -36,6 +37,11 @@ public class MenuManager {
     private final @NonNull PaperCommandManager<CommandSender> commandManager;
 
     /**
+     * Lang reference.
+     */
+    private final @NonNull Lang lang;
+
+    /**
      * GameManager reference.
      */
     private final @NonNull GameManager gameManager;
@@ -51,18 +57,21 @@ public class MenuManager {
      * @param plugin         JavaPlugin reference.
      * @param commandManager PaperCommandManager reference.
      * @param config         Config reference.
+     * @param lang           Lang reference.
      */
     public MenuManager(
             final @NonNull JavaPlugin plugin,
             final @NonNull PaperCommandManager<CommandSender> commandManager,
             final @NonNull GameManager gameManager,
-            final @NonNull Config config
+            final @NonNull Config config,
+            final @NonNull Lang lang
     ) {
         this.plugin = plugin;
         this.commandManager = commandManager;
         this.gameManager = gameManager;
         this.openInventories = new ArrayList<>();
         this.config = config;
+        this.lang = lang;
     }
 
     /**

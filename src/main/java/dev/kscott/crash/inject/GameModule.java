@@ -5,6 +5,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import dev.kscott.crash.config.Config;
+import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.game.BetManager;
 import dev.kscott.crash.game.CrashProvider;
 import dev.kscott.crash.game.GameManager;
@@ -28,10 +29,11 @@ public class GameModule extends AbstractModule {
     }
 
     /**
-     * @param plugin JavaPlugin reference.
-     * @param crashProvider CrashProvider reference ({@link this#provideCrashProvider()}.
+     * @param plugin         JavaPlugin reference.
+     * @param crashProvider  CrashProvider reference ({@link this#provideCrashProvider()}.
      * @param commandManager PaperCommandManager reference.
-     * @param config Config reference.
+     * @param config         Config reference.
+     * @param lang           Lang reference.
      * @return the {@link GameManager}.
      */
     @Provides
@@ -40,9 +42,10 @@ public class GameModule extends AbstractModule {
             final @NonNull JavaPlugin plugin,
             final @NonNull CrashProvider crashProvider,
             final @NonNull PaperCommandManager<CommandSender> commandManager,
-            final @NonNull Config config
+            final @NonNull Config config,
+            final @NonNull Lang lang
     ) {
-        return new GameManager(plugin, crashProvider, commandManager, config);
+        return new GameManager(plugin, crashProvider, commandManager, config, lang);
     }
 
     /**

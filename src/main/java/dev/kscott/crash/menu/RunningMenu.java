@@ -3,6 +3,7 @@ package dev.kscott.crash.menu;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import dev.kscott.crash.config.Config;
+import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.game.GameManager;
 import dev.kscott.crash.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
@@ -15,10 +16,7 @@ import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class RunningMenu extends GameMenu {
 
@@ -30,7 +28,8 @@ public class RunningMenu extends GameMenu {
     public RunningMenu(
             final @NonNull Player player,
             final @NonNull GameManager gameManager,
-            final @NonNull Config config
+            final @NonNull Config config,
+            final @NonNull Lang lang
     ) {
         super(6, "Crash");
 
@@ -57,9 +56,9 @@ public class RunningMenu extends GameMenu {
                                 .append(Component.text(" ".repeat(10)).style(Style.style(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false).decorate(TextDecoration.STRIKETHROUGH)))
                 );
 
-                final @NonNull Map<UUID, Double> betMap = gameManager.getBetManager().getBets();
+                int amount = 0;
 
-                for (final var entry : betMap.entrySet()) {
+                for (final Map.Entry<@NonNull UUID, @NonNull Double> entry : gameManager.getBetManager().getBets().entrySet()) {
                     final @NonNull UUID uuid = entry.getKey();
                     final double bet = entry.getValue();
 
@@ -72,6 +71,12 @@ public class RunningMenu extends GameMenu {
                     final @NonNull String playerName = betPlayer.getName();
 
                     loreList.add(Component.text(playerName + ": " + bet).color(NamedTextColor.AQUA));
+
+                    amount++;
+
+                    if (amount > config.getOtherPlayersListAmount()) {
+                        break;
+                    }
                 }
             }
         }
