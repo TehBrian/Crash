@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 import dev.kscott.crash.game.CrashProvider;
 import dev.kscott.crash.game.GameManager;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class CrashAdminCommand {

@@ -29,7 +29,7 @@ public class PostGameMenu extends GameMenu {
 
         fgPane.addItem(new GuiItem(
                 new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
-                        .name(Component.text("Crashed @ " + gameManager.getCrashPoint()+"x")
+                        .name(Component.text("Crashed @ " + gameManager.getCrashPoint() + "x")
                                 .decorate(TextDecoration.BOLD)
                                 .color(NamedTextColor.RED)
                                 .decoration(TextDecoration.ITALIC, false)

@@ -33,6 +33,7 @@ public class CrashProvider {
 
     /**
      * Generates a crash point.
+     *
      * @return crash point as a {@code double}.
      */
     @SuppressWarnings("UnstableApiUsage")
@@ -54,6 +55,7 @@ public class CrashProvider {
 
     /**
      * Generates a random hash based on the previous hash.
+     *
      * @return hash as {@link String}.
      */
     @SuppressWarnings("UnstableApiUsage")

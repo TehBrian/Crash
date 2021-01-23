@@ -41,6 +41,7 @@ public class BetManager {
 
     /**
      * Constructs BetManager.
+     *
      * @param gameManager GameManager reference.
      */
     public BetManager(final @NonNull GameManager gameManager) {

@@ -1,6 +1,5 @@
 package dev.kscott.crash.menu;
 
-import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import dev.kscott.crash.utils.ItemBuilder;
 import org.bukkit.Material;

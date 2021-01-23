@@ -88,6 +88,7 @@ public class MenuManager {
 
     /**
      * Shows the active game menu to a player.
+     *
      * @param player Player to show.
      */
     public void showGameMenu(final @NonNull Player player) {
@@ -100,6 +101,7 @@ public class MenuManager {
 
     /**
      * Creates the game menu for a player.
+     *
      * @param player Player who is intended to see this.
      * @return The game menu.
      */
@@ -119,6 +121,7 @@ public class MenuManager {
 
     /**
      * Removes a menu from the inventory list.
+     *
      * @param inventory Inventory to remove.
      */
     public void inventoryClosed(final @NonNull Inventory inventory) {

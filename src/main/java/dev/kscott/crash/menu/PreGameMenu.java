@@ -3,7 +3,6 @@ package dev.kscott.crash.menu;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import dev.kscott.crash.config.Config;
-import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.game.GameManager;
 import dev.kscott.crash.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
@@ -128,7 +127,7 @@ public class PreGameMenu extends GameMenu {
 
                     final @NonNull String playerName = betPlayer.getName();
 
-                    lore.add(Component.text(playerName+": "+bet).color(NamedTextColor.AQUA));
+                    lore.add(Component.text(playerName + ": " + bet).color(NamedTextColor.AQUA));
                 }
             }
         }

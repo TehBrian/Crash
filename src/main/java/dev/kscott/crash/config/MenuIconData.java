@@ -1,18 +1,14 @@
 package dev.kscott.crash.config;
 
-import com.google.common.collect.Lists;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.chat.BaseComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +54,7 @@ public class MenuIconData {
      * Will assign an empty array to {@link this#lore}.
      *
      * @param material {@link Material} of this icon.
-     * @param name the name of this icon.
+     * @param name     the name of this icon.
      */
     public MenuIconData(
             final @NonNull Material material,
@@ -73,8 +69,8 @@ public class MenuIconData {
      * Constructs the MenuIconData.
      *
      * @param material the {@link Material} of this icon.
-     * @param name the name of this icon.
-     * @param lore the lore of this icon.
+     * @param name     the name of this icon.
+     * @param lore     the lore of this icon.
      */
     public MenuIconData(
             final @NonNull Material material,

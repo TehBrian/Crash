@@ -58,7 +58,7 @@ public class Config {
     /**
      * Constructs the config, and loads it.
      *
-     * @param plugin          {@link this#plugin}
+     * @param plugin {@link this#plugin}
      */
     public Config(final @NonNull JavaPlugin plugin) {
         this.plugin = plugin;

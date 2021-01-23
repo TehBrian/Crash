@@ -4,14 +4,10 @@ import cloud.commandframework.paper.PaperCommandManager;
 import dev.kscott.crash.config.Config;
 import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.menu.MenuManager;
-import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -91,7 +87,7 @@ public class GameManager {
         this.commandManager = commandManager;
         this.config = config;
 
-        this.menuManager = new MenuManager(plugin, commandManager,this, config, lang);
+        this.menuManager = new MenuManager(plugin, commandManager, this, config, lang);
         this.betManager = new BetManager(this);
 
         this.currentMultiplier = 0;

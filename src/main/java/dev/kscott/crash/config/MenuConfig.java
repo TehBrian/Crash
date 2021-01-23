@@ -1,7 +1,5 @@
 package dev.kscott.crash.config;
 
-import cloud.commandframework.arguments.CommandArgument;
-import net.kyori.adventure.text.Component;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -9,7 +7,6 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 
-import java.awt.*;
 import java.io.File;
 import java.nio.file.Paths;
 
@@ -41,7 +38,7 @@ public class MenuConfig {
     /**
      * Constructs the config, and loads it.
      *
-     * @param plugin          {@link this#plugin}.
+     * @param plugin {@link this#plugin}.
      */
     public MenuConfig(
             final @NonNull JavaPlugin plugin,

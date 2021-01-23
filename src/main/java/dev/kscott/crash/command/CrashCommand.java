@@ -2,7 +2,6 @@ package dev.kscott.crash.command;
 
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.CommandArgument;
-import cloud.commandframework.arguments.standard.LongArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.paper.PaperCommandManager;
@@ -14,7 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +52,7 @@ public class CrashCommand {
             final @NonNull PaperCommandManager<CommandSender> commandManager,
             final @NonNull CrashProvider crashProvider,
             final @NonNull GameManager gameManager
-            ) {
+    ) {
         this.commandManager = commandManager;
         this.gameManager = gameManager;
         this.crashProvider = crashProvider;
