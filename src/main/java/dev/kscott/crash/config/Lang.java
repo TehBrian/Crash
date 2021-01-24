@@ -2,6 +2,7 @@ package dev.kscott.crash.config;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -70,6 +71,29 @@ public class Lang {
      */
     public @NonNull Component c(final @NonNull String key) {
         return c(key, Map.of());
+    }
+
+    /**
+     * Gets the String value at {@code key} and returns a parsed String.
+     * @param key path to value.
+     * @return String
+     */
+    public @NonNull String s(final @NonNull String key) {
+        @Nullable String value;
+
+        if (root != null) {
+            value = root.node(key.split("\\.")).getString();
+        } else {
+            value = "<red>ERR</red>";
+        }
+
+        if (value == null) {
+            this.plugin.getLogger().severe("Tried to load lang key '" + key + "', but it didn't exist.");
+            this.plugin.getLogger().severe("Using default value.");
+            value = "<red>ERR</red>";
+        }
+
+        return LegacyComponentSerializer.legacySection().serialize(miniMessage.parse(value));
     }
 
     /**
