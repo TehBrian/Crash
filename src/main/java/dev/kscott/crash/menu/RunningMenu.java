@@ -1,5 +1,6 @@
 package dev.kscott.crash.menu;
 
+import com.github.stefvanschie.inventoryframework.font.util.Font;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import dev.kscott.crash.config.Config;
@@ -34,7 +35,7 @@ public class RunningMenu extends GameMenu {
             final @NonNull Config config,
             final @NonNull Lang lang
     ) {
-        super(6, "Crash");
+        super(6, lang.s("crash-inventory-title"));
 
         boolean playerDidBet = gameManager.getBetManager().didBet(player);
 

@@ -2,6 +2,7 @@ package dev.kscott.crash.menu;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.game.GameManager;
 import dev.kscott.crash.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
@@ -18,8 +19,12 @@ public class PostGameMenu extends GameMenu {
      *
      * @param player Player who's intended to view this inventory
      */
-    public PostGameMenu(final @NonNull Player player, final @NonNull GameManager gameManager) {
-        super(6, "Crash");
+    public PostGameMenu(
+            final @NonNull Player player,
+            final @NonNull GameManager gameManager,
+            final @NonNull Lang lang
+    ) {
+        super(6, lang.s("crash-inventory-title"));
 
         final @NonNull StaticPane bgPane = new StaticPane(0, 0, 9, 6);
 

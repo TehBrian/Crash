@@ -3,6 +3,7 @@ package dev.kscott.crash.menu;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import dev.kscott.crash.config.Config;
+import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.game.GameManager;
 import dev.kscott.crash.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
@@ -30,9 +31,10 @@ public class PreGameMenu extends GameMenu {
     public PreGameMenu(
             final @NonNull Player player,
             final @NonNull GameManager gameManager,
-            final @NonNull Config config
+            final @NonNull Config config,
+            final @NonNull Lang lang
     ) {
-        super(6, "Crash");
+        super(6, lang.s("crash-inventory-title"));
 
         final int countdown = gameManager.getPreGameCountdown();
 

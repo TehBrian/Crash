@@ -109,11 +109,11 @@ public class MenuManager {
         final GameManager.GameState gameState = this.gameManager.getGameState();
 
         if (gameState == GameManager.GameState.PRE_GAME) {
-            return new PreGameMenu(player, this.gameManager, config);
+            return new PreGameMenu(player, this.gameManager, config, lang);
         } else if (gameState == GameManager.GameState.RUNNING) {
-            return new RunningMenu(player, this.gameManager, config);
+            return new RunningMenu(player, this.gameManager, config, lang);
         } else if (gameState == GameManager.GameState.POST_GAME) {
-            return new PostGameMenu(player, this.gameManager);
+            return new PostGameMenu(player, this.gameManager, lang);
         }
 
         return new NotRunningMenu(player);
