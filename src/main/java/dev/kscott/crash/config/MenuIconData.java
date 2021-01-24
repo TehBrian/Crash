@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,17 +27,15 @@ public class MenuIconData {
     /**
      * The name of this icon.
      */
-    private final @NonNull Component name;
+    private final @Nullable Component name;
 
     /**
      * The lore of this icon.
      */
-    private final @NonNull Component[] lore;
+    private final @Nullable Component[] lore;
 
     /**
      * Constructs the MenuIconData.
-     * <p>
-     * Will add placeholder values to {@link this#name} and assign an empty array to {@link this#lore}.
      *
      * @param material {@link Material} of this icon.
      */
@@ -44,14 +43,12 @@ public class MenuIconData {
             final @NonNull Material material
     ) {
         this.material = material;
-        this.name = Component.text("");
-        this.lore = new Component[]{};
+        this.name = null;
+        this.lore = null;
     }
 
     /**
      * Constructs the MenuIconData.
-     * <p>
-     * Will assign an empty array to {@link this#lore}.
      *
      * @param material {@link Material} of this icon.
      * @param name     the name of this icon.
@@ -62,7 +59,7 @@ public class MenuIconData {
     ) {
         this.material = material;
         this.name = name;
-        this.lore = new Component[]{};
+        this.lore = null;
     }
 
     /**
@@ -92,14 +89,14 @@ public class MenuIconData {
     /**
      * @return the name of this icon.
      */
-    public @NonNull Component getName() {
+    public @Nullable Component getName() {
         return name;
     }
 
     /**
      * @return the lore of this icon.
      */
-    public @NonNull Component[] getLore() {
+    public @Nullable Component[] getLore() {
         return lore;
     }
 
@@ -110,16 +107,29 @@ public class MenuIconData {
         final @NonNull ComponentSerializer<Component, Component, BaseComponent[]> serializer = BungeeComponentSerializer.get();
 
         final @NonNull ItemStack itemStack = new ItemStack(material);
-        final @NonNull ItemMeta meta = Bukkit.getItemFactory().getItemMeta(material);
-        final @NonNull BaseComponent[] nameComponents = serializer.serialize(this.name);
-        final @NonNull List<BaseComponent[]> loreComponents = new ArrayList<>();
 
-        for (final @NonNull Component component : this.lore) {
-            loreComponents.add(serializer.serialize(component));
+        if (this.name == null && this.lore == null) {
+            return itemStack;
         }
 
-        meta.setDisplayNameComponent(nameComponents);
-        meta.setLoreComponents(loreComponents);
+        final @NonNull ItemMeta meta = Bukkit.getItemFactory().getItemMeta(material);
+
+        if (this.name != null) {
+            final @NonNull BaseComponent[] nameComponents = serializer.serialize(this.name);
+            meta.setDisplayNameComponent(nameComponents);
+        }
+
+        if (this.lore != null && this.lore.length != 0) {
+            final @NonNull List<BaseComponent[]> loreComponents = new ArrayList<>();
+
+            for (final @Nullable Component component : this.lore) {
+                if (component == null) continue;
+
+                loreComponents.add(serializer.serialize(component));
+            }
+
+            meta.setLoreComponents(loreComponents);
+        }
 
         itemStack.setItemMeta(meta);
 
