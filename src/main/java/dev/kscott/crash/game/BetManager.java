@@ -31,12 +31,12 @@ public class BetManager {
     /**
      * The Map which stores the player bets.
      */
-    private @NonNull Map<UUID, Double> betMap;
+    private @NonNull HashMap<UUID, Double> betMap;
 
     /**
      * The Map which stores queued player bets.
      */
-    private final @NonNull Map<UUID, Double> queuedBetMap;
+    private final @NonNull HashMap<UUID, Double> queuedBetMap;
 
     /**
      * The Map which stores cashed out bets.
@@ -170,8 +170,8 @@ public class BetManager {
      * Runs methods for a new game.
      */
     public void newGame() {
-        this.betMap = new HashMap<>(this.queuedBetMap);
         reset();
+        this.betMap.putAll(queuedBetMap);
     }
 
     /**
