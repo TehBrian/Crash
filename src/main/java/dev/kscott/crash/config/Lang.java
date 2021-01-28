@@ -134,7 +134,7 @@ public class Lang {
      * @param amount Amount to format.
      * @return Formatted String.
      */
-    public @NonNull String formatCurrency(final double amount) {
+    public static @NonNull String formatCurrency(final double amount) {
         return NumberFormat.getCurrencyInstance().format(amount);
     }
 
