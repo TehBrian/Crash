@@ -98,6 +98,15 @@ public class GameManager {
         this.crashPoint = 0;
 
         this.gameState = GameState.NOT_RUNNING;
+
+        if (this.config.isAutoStart()) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    startGame();
+                }
+            }.runTaskLater(plugin, 1);
+        }
     }
 
     /**
