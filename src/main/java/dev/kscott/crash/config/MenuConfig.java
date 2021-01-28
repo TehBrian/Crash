@@ -114,7 +114,7 @@ public class MenuConfig {
 
         try {
             root = loader.load();
-        } catch (ConfigurateException e) {
+        } catch (final ConfigurateException e) {
             throw new RuntimeException("Failed to load the configuration.", e);
         }
     }
@@ -146,7 +146,7 @@ public class MenuConfig {
 
                 try {
                     keyNumber = Integer.parseInt(key);
-                } catch (final @NonNull NumberFormatException e) {
+                } catch (final NumberFormatException e) {
                     this.plugin.getLogger().warning("Key " + key + " could not be parsed into an integer. Please review your configuration.");
                     continue;
                 }
@@ -172,7 +172,7 @@ public class MenuConfig {
 
                 try {
                     lore = iconNode.node("lore").getList(String.class);
-                } catch (final @NonNull SerializationException e) {
+                } catch (final SerializationException e) {
                     this.plugin.getLogger().warning("Failed to parse " + key + "'s lore. Please review your configuration.");
                     this.plugin.getLogger().warning("Stacktrace (if you can't figure it out, send this to bluely):");
                     e.printStackTrace();
