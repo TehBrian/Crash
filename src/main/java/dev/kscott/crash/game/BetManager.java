@@ -99,7 +99,7 @@ public class BetManager {
 
         if (playerBalance >= bet) {
             economy.withdrawPlayer(player, bet);
-            if (gameManager.getGameState() != GameManager.GameState.PRE_GAME) {
+            if (gameManager.getGameState() == GameManager.GameState.RUNNING) {
                 this.queuedBetMap.put(player.getUniqueId(), bet);
                 audiences.player(player).sendMessage(lang.c("bet-queued-message", Map.of("{money}", Lang.formatCurrency(bet))));
             } else {
@@ -172,6 +172,7 @@ public class BetManager {
     public void newGame() {
         reset();
         this.betMap.putAll(queuedBetMap);
+        queuedBetMap.clear();
     }
 
     /**
