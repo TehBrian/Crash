@@ -43,7 +43,10 @@ public class RunningMenu extends GameMenu {
         nameComponent = nameComponent.replaceText(TextReplacementConfig.builder().match("\\{multiplier\\}").replacement(Double.toString(gameManager.getCurrentMultiplier())).build());
 
         if (playerDidBet) {
-            lore = Objects.requireNonNullElse(iconData.getDidBetLore(), new ArrayList<>());
+            lore = new ArrayList<>();
+            for (final @NonNull Component loreComponent : iconData.getDidBetLore()) {
+                 lore.add(loreComponent.replaceText(TextReplacementConfig.builder().match("\\{multiplied-bet\\}").replacement(Lang.formatCurrency(gameManager.getBetManager().getCashout(player))).build()));
+            }
         } else {
             lore = Objects.requireNonNullElse(iconData.getLore(), new ArrayList<>());
         }
