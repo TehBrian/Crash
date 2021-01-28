@@ -6,6 +6,7 @@ import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
+import dev.kscott.crash.config.Config;
 import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.exception.NotEnoughBalanceException;
 import dev.kscott.crash.game.CrashProvider;
@@ -49,6 +50,8 @@ public class CrashCommand {
 
     private final @NonNull Lang lang;
 
+    private final @NonNull Config config;
+
     /**
      * Constructs CrashCommand.
      *
@@ -60,13 +63,15 @@ public class CrashCommand {
             final @NonNull CrashProvider crashProvider,
             final @NonNull GameManager gameManager,
             final @NonNull Lang lang,
-            final @NonNull JavaPlugin plugin
+            final @NonNull JavaPlugin plugin,
+            final @NonNull Config config
     ) {
         this.commandManager = commandManager;
         this.gameManager = gameManager;
         this.crashProvider = crashProvider;
         this.lang = lang;
         this.audiences = BukkitAudiences.create(plugin);
+        this.config = config;
 
         this.commandCompletions = new ArrayList<>();
         commandCompletions.add("history");
@@ -125,6 +130,11 @@ public class CrashCommand {
 
         try {
             final long bet = Long.parseLong(argument);
+
+            if (bet > config.getMaxBet()) {
+                this.audiences.player(player).sendMessage(lang.c("over-max-bet"));
+                return;
+            }
 
             this.gameManager.getBetManager().placeBet(player, bet);
         } catch (final NumberFormatException ex) {

@@ -36,6 +36,11 @@ public class Config {
     private int gameTick = 5;
 
     /**
+     * How much can a player bet?
+     */
+    private double maxBet = 10000;
+
+    /**
      * How fast will the multiplier increase?
      */
     private double crashSpeedMultiplier = 0.03;
@@ -92,6 +97,7 @@ public class Config {
         this.postGameTime = this.root.node("post-game-time").getInt(5);
         this.gameTick = this.root.node("game-tick").getInt(5);
         this.crashSpeedMultiplier = this.root.node("crash-speed-multiplier").getDouble(0.03);
+        this.maxBet = this.root.node("max-bet").getDouble(10000);
     }
 
     /**
@@ -127,5 +133,12 @@ public class Config {
      */
     public boolean isAutoStart() {
         return autoStart;
+    }
+
+    /**
+     * @return {@link this#maxBet}
+     */
+    public double getMaxBet() {
+        return maxBet;
     }
 }
