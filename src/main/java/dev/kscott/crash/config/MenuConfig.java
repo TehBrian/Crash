@@ -1,6 +1,5 @@
 package dev.kscott.crash.config;
 
-import cloud.commandframework.arguments.standard.IntegerArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -16,13 +15,8 @@ import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
 
-import java.awt.*;
-import java.io.File;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Stores the GameMenu display configuration.
@@ -320,13 +314,19 @@ public class MenuConfig {
 
     /**
      * Returns a RunningMenuIconData for the given multiplier value.
+     *
      * @param multiplier Multiplier to get MenuIconData for.
      * @return RunningMenuIconData.
      */
     public @NonNull RunningMenuIconData getRunningIconData(final double multiplier) {
-        for (final var entry : runningIcons.entrySet()) {
+        final var entrySet = runningIcons.entrySet();
+        final var entryList = new ArrayList<>(entrySet);
+        entryList.sort((a, b) -> a.getKey() >= b.getKey() ? 1 : -1);
+        Collections.reverse(entryList);
+
+        for (final var entry : entryList) {
             double entryMultiplier = entry.getKey();
-            if (multiplier >= entryMultiplier) {
+            if (entryMultiplier <= multiplier) {
                 return entry.getValue();
             }
         }
@@ -336,6 +336,7 @@ public class MenuConfig {
 
     /**
      * Returns an ItemStack for a MenuIconData.
+     *
      * @param iconData {@link MenuIconData} to get the ItemStack for.
      * @return ItemStack.
      */
