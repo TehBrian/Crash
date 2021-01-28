@@ -5,3 +5,4 @@ api-version: 1.16
 authors: [ bluely ]
 description: A fun casino-inspired game!
 website: kscott.dev
+depend: [Vault]
