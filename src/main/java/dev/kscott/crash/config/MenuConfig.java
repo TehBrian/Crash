@@ -136,7 +136,7 @@ public class MenuConfig {
 
                 final @NonNull String key = (String) keyObject;
 
-                @Nullable Integer keyNumber = null;
+                int keyNumber;
 
                 try {
                     keyNumber = Integer.parseInt(key);
