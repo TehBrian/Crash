@@ -137,5 +137,4 @@ public class BetManager {
         this.betMap.clear();
     }
 
-
 }
