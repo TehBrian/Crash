@@ -208,7 +208,7 @@ public class MenuConfig {
      * @return MenuIconData. If the MenuIconData is not present for {@code number}, it will return a placeholder MenuIconData.
      */
     public @NonNull MenuIconData getPreGameIconData(final int number) {
-        return this.preGameCountdownIcons.get(number);
+        return this.preGameCountdownIcons.getOrDefault(number, placeholderIcon);
     }
 
     /**
