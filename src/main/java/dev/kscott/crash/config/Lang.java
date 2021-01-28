@@ -13,6 +13,7 @@ import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.NumberFormat;
 import java.util.Map;
 
 /**
@@ -124,6 +125,15 @@ public class Lang {
         }
 
         return this.miniMessage.parse(value);
+    }
+
+    /**
+     * Formats a {@code double} value to currency.
+     * @param amount Amount to format.
+     * @return Formatted String.
+     */
+    public @NonNull String formatCurrency(final double amount) {
+        return NumberFormat.getCurrencyInstance().format(amount);
     }
 
 }
