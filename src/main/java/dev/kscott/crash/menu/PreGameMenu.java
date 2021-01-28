@@ -89,7 +89,7 @@ public class PreGameMenu extends GameMenu {
                     @NonNull Component betComponent = menuConfig.getOtherBetsListFormat();
                     betComponent = betComponent
                             .replaceText(TextReplacementConfig.builder().match("\\{player\\}").replacement(playerName).build())
-                            .replaceText(TextReplacementConfig.builder().match("\\{bet\\}").replacement(Double.toString(bet)).build());
+                            .replaceText(TextReplacementConfig.builder().match("\\{bet\\}").replacement(lang.formatCurrency(bet)).build());
 
                     lore.add(BungeeComponentSerializer.legacy().serialize(betComponent));
 
