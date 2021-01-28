@@ -188,6 +188,7 @@ public class BetManager {
                     audiences.player((Player) player).sendMessage(lang.c("cashout-message", Map.of("{money}", Lang.formatCurrency(cashout))));
                 }
             }
+            removeBet(player);
         }
     }
 
