@@ -1,18 +1,17 @@
 package dev.kscott.crash.game;
 
+import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.exception.NotEnoughBalanceException;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Manages interactions for player bets.
@@ -32,12 +31,27 @@ public class BetManager {
     /**
      * The Map which stores the player bets.
      */
-    private final @NonNull Map<UUID, Double> betMap;
+    private @NonNull Map<UUID, Double> betMap;
+
+    /**
+     * The Map which stores queued player bets.
+     */
+    private final @NonNull Map<UUID, Double> queuedBetMap;
 
     /**
      * The Map which stores cashed out bets.
      */
     private final @NonNull Map<UUID, Double> cashoutMap;
+
+    /**
+     * BukkitAudiences instance.
+     */
+    private final @NonNull BukkitAudiences audiences;
+
+    /**
+     * Lang reference.
+     */
+    private final @NonNull Lang lang;
 
     /**
      * Constructs BetManager.
@@ -46,10 +60,14 @@ public class BetManager {
      */
     public BetManager(
             final @NonNull JavaPlugin plugin,
-            final @NonNull GameManager gameManager
+            final @NonNull GameManager gameManager,
+            final @NonNull Lang lang
     ) {
         this.gameManager = gameManager;
+        this.lang = lang;
+        this.audiences = BukkitAudiences.create(plugin);
         this.betMap = new HashMap<>();
+        this.queuedBetMap = new HashMap<>();
         this.cashoutMap = new HashMap<>();
 
         final @Nullable RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
@@ -80,8 +98,14 @@ public class BetManager {
         final double playerBalance = economy.getBalance(player);
 
         if (playerBalance >= bet) {
-            this.betMap.put(player.getUniqueId(), bet);
             economy.withdrawPlayer(player, bet);
+            if (gameManager.getGameState() != GameManager.GameState.PRE_GAME) {
+                this.queuedBetMap.put(player.getUniqueId(), bet);
+                audiences.player(player).sendMessage(lang.c("bet-queued-message", Map.of("{money}", Lang.formatCurrency(bet))));
+            } else {
+                audiences.player(player).sendMessage(lang.c("bet-message", Map.of("{money}", Lang.formatCurrency(bet))));
+                this.betMap.put(player.getUniqueId(), bet);
+            }
         } else {
             throw new NotEnoughBalanceException(player, bet, playerBalance);
         }
@@ -94,7 +118,7 @@ public class BetManager {
      * @param player Player to get bet for.
      * @return the amount the player bet.
      */
-    public double getBet(final @NonNull Player player) {
+    public double getBet(final @NonNull OfflinePlayer player) {
         return this.betMap.getOrDefault(player.getUniqueId(), 0D);
     }
 
@@ -103,7 +127,7 @@ public class BetManager {
      *
      * @param player player to remove bet for
      */
-    public void removeBet(final @NonNull Player player) {
+    public void removeBet(final @NonNull OfflinePlayer player) {
         this.betMap.remove(player.getUniqueId());
     }
 
@@ -112,7 +136,7 @@ public class BetManager {
      * @param player Player to check.
      * @return true if the player has a bet placed, false if not.
      */
-    public boolean didBet(final @NonNull Player player) {
+    public boolean didBet(final @NonNull OfflinePlayer player) {
         return this.betMap.containsKey(player.getUniqueId());
     }
 
@@ -120,12 +144,18 @@ public class BetManager {
      * @param player Player to check.
      * @return the value of their cashout at the current multiplier.
      */
-    public double getCashout(final @NonNull Player player) {
+    public double getCashout(final @NonNull OfflinePlayer player) {
         if (!this.didBet(player)) {
             return 0;
         }
+        return Math.round(this.getBet(player) * this.gameManager.getCurrentMultiplier() * 100.0) / 100.0;
+    }
 
-        return BigDecimal.valueOf(this.getBet(player) * this.gameManager.getCurrentMultiplier()).setScale(2, RoundingMode.HALF_DOWN).doubleValue();
+    /**
+     * Returns a Set of UUIDs of players who cashed out.
+     */
+    public Set<UUID> getCashedOutPlayers() {
+        return this.cashoutMap.keySet();
     }
 
     /**
@@ -134,6 +164,30 @@ public class BetManager {
     public void reset() {
         this.cashoutMap.clear();
         this.betMap.clear();
+    }
+
+    /**
+     * Runs methods for a new game.
+     */
+    public void newGame() {
+        this.betMap = new HashMap<>(this.queuedBetMap);
+        reset();
+    }
+
+    /**
+     * Cashes out a player.
+     * @param player Player to cashout.
+     */
+    public void cashout(final @NonNull OfflinePlayer player) {
+        if (this.didBet(player)) {
+            final double cashout = getCashout(player);
+            if (cashout != 0) {
+                economy.depositPlayer(player, cashout);
+                if (player.isOnline()) {
+                    audiences.player((Player) player).sendMessage(lang.c("cashout-message", Map.of("{money}", Lang.formatCurrency(cashout))));
+                }
+            }
+        }
     }
 
 }

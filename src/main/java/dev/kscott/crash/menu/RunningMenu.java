@@ -98,7 +98,10 @@ public class RunningMenu extends GameMenu {
 
         final @NonNull StaticPane fgPane = new StaticPane(0, 0, 9, 6);
 
-        fgPane.addItem(new GuiItem(iconItemStack), 4, 2);
+        fgPane.addItem(new GuiItem(iconItemStack, onClick -> {
+            final @NonNull Player whoClicked = (Player) onClick.getWhoClicked();
+            gameManager.getBetManager().cashout(whoClicked);
+        }), 4, 2);
 
 
         addPane(fgPane);
