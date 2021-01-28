@@ -1,4 +1,4 @@
-name: Crash
+name: CasinoCrash
 version: @version@
 main: dev.kscott.crash.CrashPlugin
 api-version: 1.16
