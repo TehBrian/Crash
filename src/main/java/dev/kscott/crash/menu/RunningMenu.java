@@ -1,27 +1,20 @@
 package dev.kscott.crash.menu;
 
-import com.github.stefvanschie.inventoryframework.font.util.Font;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
-import dev.kscott.crash.config.Config;
-import dev.kscott.crash.config.Lang;
-import dev.kscott.crash.config.MenuConfig;
+import dev.kscott.crash.config.*;
 import dev.kscott.crash.game.GameManager;
 import dev.kscott.crash.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.Style;
-import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.TextReplacementConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class RunningMenu extends GameMenu {
 
@@ -41,32 +34,41 @@ public class RunningMenu extends GameMenu {
 
         boolean playerDidBet = gameManager.getBetManager().didBet(player);
 
-        final @NonNull List<Component> loreList = new ArrayList<>();
+        @NonNull List<Component> lore;
 
-        final @NonNull Style style = Style.style(NamedTextColor.GRAY)
-                .decoration(TextDecoration.BOLD, false)
-                .decoration(TextDecoration.ITALIC, false);
+        final @NonNull RunningMenuIconData iconData = menuConfig.getRunningIconData(gameManager.getCurrentMultiplier());
+
+        @NonNull Component nameComponent = Objects.requireNonNullElse(iconData.getName(), Component.text(""));
+
+        nameComponent = nameComponent.replaceText(TextReplacementConfig.builder().match("\\{multiplier\\}").replacement(Double.toString(gameManager.getCurrentMultiplier())).build());
 
         if (playerDidBet) {
-            loreList.add(Component.text("Click to cash out ").style(style)
-                    .append(Component.text(gameManager.getBetManager().getCashout(player)).style(style.color(NamedTextColor.GOLD)))
-                    .append(Component.text("!")).style(style));
+            lore = Objects.requireNonNullElse(iconData.getDidBetLore(), new ArrayList<>());
+        } else {
+            lore = Objects.requireNonNullElse(iconData.getLore(), new ArrayList<>());
         }
 
-        if (config.isShowBetList()) {
+        if (menuConfig.isRunningOtherBetsList()) {
             if (gameManager.getBetManager().getBets().size() != 0) {
-                loreList.add(
-                        Component.text(" ".repeat(10))
-                                .style(Style.style(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false).decorate(TextDecoration.STRIKETHROUGH))
-                                .append(Component.text(" BETS ").color(NamedTextColor.AQUA).decoration(TextDecoration.STRIKETHROUGH, false).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false))
-                                .append(Component.text(" ".repeat(10)).style(Style.style(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false).decorate(TextDecoration.STRIKETHROUGH)))
-                );
+                final @NonNull Component header = menuConfig.getOtherBetsListHeader();
 
-                int amount = 0;
+                lore.add(header);
 
-                for (final Map.Entry<@NonNull UUID, @NonNull Double> entry : gameManager.getBetManager().getBets().entrySet()) {
-                    final @NonNull UUID uuid = entry.getKey();
-                    final double bet = entry.getValue();
+                final @NonNull Set<Map.Entry<UUID, Double>> betList = gameManager.getBetManager().getBets().entrySet();
+
+                final @NonNull Iterator<Map.Entry<UUID, Double>> betListIterator = betList.iterator();
+
+                int index = 0;
+
+                while (betListIterator.hasNext()) {
+                    if (index > menuConfig.getRunningOtherBetsAmount()) {
+                        break;
+                    }
+
+                    final Map.Entry<UUID, Double> betEntry = betListIterator.next();
+
+                    final @NonNull UUID uuid = betEntry.getKey();
+                    final double bet = betEntry.getValue();
 
                     final @Nullable Player betPlayer = Bukkit.getPlayer(uuid);
 
@@ -76,16 +78,19 @@ public class RunningMenu extends GameMenu {
 
                     final @NonNull String playerName = betPlayer.getName();
 
-                    loreList.add(Component.text(playerName + ": " + bet).color(NamedTextColor.AQUA));
+                    @NonNull Component betComponent = menuConfig.getOtherBetsListFormat();
+                    betComponent = betComponent
+                            .replaceText(TextReplacementConfig.builder().match("\\{player\\}").replacement(playerName).build())
+                            .replaceText(TextReplacementConfig.builder().match("\\{bet\\}").replacement(lang.formatCurrency(bet)).build());
 
-                    amount++;
+                    lore.add(betComponent);
 
-                    if (amount > config.getOtherPlayersListAmount()) {
-                        break;
-                    }
+                    index++;
                 }
             }
         }
+
+        final @NonNull ItemStack iconItemStack = MenuIconData.constructItemStack(iconData.getMaterial(), nameComponent, lore);
 
         final @NonNull StaticPane bgPane = new StaticPane(0, 0, 9, 6);
 
@@ -93,16 +98,7 @@ public class RunningMenu extends GameMenu {
 
         final @NonNull StaticPane fgPane = new StaticPane(0, 0, 9, 6);
 
-        fgPane.addItem(new GuiItem(
-                new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                        .name(Component.text(gameManager.getCurrentMultiplier() + "x")
-                                .color(NamedTextColor.GREEN)
-                                .decorate(TextDecoration.BOLD)
-                                .decoration(TextDecoration.ITALIC, false)
-                        )
-                        .loreAdd(loreList)
-                        .build()
-        ), 4, 2);
+        fgPane.addItem(new GuiItem(iconItemStack), 4, 2);
 
 
         addPane(fgPane);
