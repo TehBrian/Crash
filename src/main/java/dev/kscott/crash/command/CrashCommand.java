@@ -136,6 +136,11 @@ public class CrashCommand {
                 return;
             }
 
+            if (this.gameManager.getBetManager().didBet(player)) {
+                this.audiences.player(player).sendMessage(lang.c("already-bet"));
+                return;
+            }
+
             this.gameManager.getBetManager().placeBet(player, bet);
         } catch (final NumberFormatException ex) {
             this.audiences.player(player).sendMessage(lang.c("not-a-number"));
