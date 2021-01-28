@@ -124,7 +124,7 @@ public class MenuConfig {
         this.preGameOtherBetsAmount = this.root.node("pre-game-menu").node("options").node("other-bets-list").node("amount").getInt(5);
         this.otherBetsListHeader = this.miniMessage.parse(this.root.node("other-bets-list").node("header").getString(""));
         this.otherBetsListFormat = this.miniMessage.parse(this.root.node("other-bets-list").node("bet").getString(""));
-        final @NonNull ConfigurationNode countdownNode = this.root.node("pre-game-menu").node("countdown-node");
+        final @NonNull ConfigurationNode countdownNode = this.root.node("pre-game-menu").node("countdown-icon");
         if (countdownNode.virtual()) {
             this.plugin.getLogger().warning("There are no countdown icons loaded! You may want to review your configuration.");
         } else {
