@@ -16,34 +16,29 @@ import java.nio.file.Paths;
 public class Config {
 
     /**
-     * Should the bet list be displayed in the crash game menus?
+     * Will the game automatically start on server bootup?
      */
-    private final boolean showBetList = true;
-
-    /**
-     * How many bets to display on the crash icon bet list?
-     */
-    private final int otherPlayersListAmount = 5;
+    private boolean autoStart = true;
 
     /**
      * How long will the post-game menu run?
      */
-    private final int countdownTime = 10;
+    private int countdownTime = 10;
 
     /**
      * How long will the post-game menu run?
      */
-    private final int postGameTime = 5;
+    private int postGameTime = 5;
 
     /**
      * How often will the crash game tick? (in Minecrft ticks)
      */
-    private final int gameTick = 5;
+    private int gameTick = 5;
 
     /**
      * How fast will the multiplier increase?
      */
-    private final double crashSpeedMultiplier = 0.03;
+    private double crashSpeedMultiplier = 0.03;
 
     /**
      * JavaPlugin reference.
@@ -92,13 +87,11 @@ public class Config {
      * Loads Crash's configuration values.
      */
     private void loadConfigurationValues() {
-    }
-
-    /**
-     * @return {@link this#otherPlayersListAmount}
-     */
-    public int getOtherPlayersListAmount() {
-        return otherPlayersListAmount;
+        this.autoStart = this.root.node("auto-start").getBoolean(true);
+        this.countdownTime = this.root.node("countdown-time").getInt(10);
+        this.postGameTime = this.root.node("post-game-time").getInt(5);
+        this.gameTick = this.root.node("game-tick").getInt(5);
+        this.crashSpeedMultiplier = this.root.node("crash-speed-multiplier").getDouble(0.03);
     }
 
     /**
@@ -127,12 +120,5 @@ public class Config {
      */
     public double getCrashSpeedMultiplier() {
         return crashSpeedMultiplier;
-    }
-
-    /**
-     * @return {@link this#showBetList}
-     */
-    public boolean isShowBetList() {
-        return showBetList;
     }
 }
