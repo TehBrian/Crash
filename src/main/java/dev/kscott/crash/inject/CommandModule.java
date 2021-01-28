@@ -40,6 +40,7 @@ public class CommandModule extends AbstractModule {
 
             commandManager = new PaperCommandManager<>(
                     plugin,
+                    // TODO this is sync, make it not sync thanks broccypoo
                     AsynchronousCommandExecutionCoordinator.simpleCoordinator(),
                     mapper,
                     mapper
