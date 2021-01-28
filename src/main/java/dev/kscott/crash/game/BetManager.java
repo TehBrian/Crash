@@ -5,6 +5,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -44,12 +45,15 @@ public class BetManager {
      *
      * @param gameManager GameManager reference.
      */
-    public BetManager(final @NonNull GameManager gameManager) {
+    public BetManager(
+            final @NonNull JavaPlugin plugin,
+            final @NonNull GameManager gameManager
+    ) {
         this.gameManager = gameManager;
         this.betMap = new HashMap<>();
         this.cashoutMap = new HashMap<>();
 
-        final @Nullable RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+        final @Nullable RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
 
         if (rsp == null) {
             throw new RuntimeException("The Vault Economy API could not be found!");
