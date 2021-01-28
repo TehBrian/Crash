@@ -3,6 +3,7 @@ package dev.kscott.crash.game;
 import cloud.commandframework.paper.PaperCommandManager;
 import dev.kscott.crash.config.Config;
 import dev.kscott.crash.config.Lang;
+import dev.kscott.crash.config.MenuConfig;
 import dev.kscott.crash.menu.MenuManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -80,14 +81,15 @@ public class GameManager {
             final @NonNull CrashProvider crashProvider,
             final @NonNull PaperCommandManager<CommandSender> commandManager,
             final @NonNull Config config,
-            final @NonNull Lang lang
+            final @NonNull Lang lang,
+            final @NonNull MenuConfig menuConfig
     ) {
         this.plugin = plugin;
         this.crashProvider = crashProvider;
         this.commandManager = commandManager;
         this.config = config;
 
-        this.menuManager = new MenuManager(plugin, commandManager, this, config, lang);
+        this.menuManager = new MenuManager(plugin, commandManager, this, config, lang, menuConfig);
         this.betManager = new BetManager(plugin, this);
 
         this.currentMultiplier = 0;

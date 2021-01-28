@@ -6,6 +6,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import dev.kscott.crash.config.Config;
 import dev.kscott.crash.config.Lang;
+import dev.kscott.crash.config.MenuConfig;
 import dev.kscott.crash.game.BetManager;
 import dev.kscott.crash.game.CrashProvider;
 import dev.kscott.crash.game.GameManager;
@@ -43,9 +44,10 @@ public class GameModule extends AbstractModule {
             final @NonNull CrashProvider crashProvider,
             final @NonNull PaperCommandManager<CommandSender> commandManager,
             final @NonNull Config config,
-            final @NonNull Lang lang
+            final @NonNull Lang lang,
+            final @NonNull MenuConfig menuConfig
     ) {
-        return new GameManager(plugin, crashProvider, commandManager, config, lang);
+        return new GameManager(plugin, crashProvider, commandManager, config, lang, menuConfig);
     }
 
     /**

@@ -4,6 +4,7 @@ import cloud.commandframework.paper.PaperCommandManager;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import dev.kscott.crash.config.Config;
 import dev.kscott.crash.config.Lang;
+import dev.kscott.crash.config.MenuConfig;
 import dev.kscott.crash.game.GameManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
@@ -47,6 +48,11 @@ public class MenuManager {
     private final @NonNull GameManager gameManager;
 
     /**
+     * MenuConfig reference.
+     */
+    private final @NonNull MenuConfig menuConfig;
+
+    /**
      * A List of GameMenu that holds all opened menus.
      */
     private final @NonNull List<InventoryHolder> openInventories;
@@ -58,15 +64,18 @@ public class MenuManager {
      * @param commandManager PaperCommandManager reference.
      * @param config         Config reference.
      * @param lang           Lang reference.
+     * @param menuConfig     MenuConfig reference.
      */
     public MenuManager(
             final @NonNull JavaPlugin plugin,
             final @NonNull PaperCommandManager<CommandSender> commandManager,
             final @NonNull GameManager gameManager,
             final @NonNull Config config,
-            final @NonNull Lang lang
+            final @NonNull Lang lang,
+            final @NonNull MenuConfig menuConfig
     ) {
         this.plugin = plugin;
+        this.menuConfig = menuConfig;
         this.commandManager = commandManager;
         this.gameManager = gameManager;
         this.openInventories = new ArrayList<>();
@@ -109,11 +118,11 @@ public class MenuManager {
         final GameManager.GameState gameState = this.gameManager.getGameState();
 
         if (gameState == GameManager.GameState.PRE_GAME) {
-            return new PreGameMenu(player, this.gameManager, config, lang);
+            return new PreGameMenu(player, this.gameManager, config, lang, menuConfig);
         } else if (gameState == GameManager.GameState.RUNNING) {
-            return new RunningMenu(player, this.gameManager, config, lang);
+            return new RunningMenu(player, this.gameManager, config, lang, menuConfig);
         } else if (gameState == GameManager.GameState.POST_GAME) {
-            return new PostGameMenu(player, this.gameManager, lang);
+            return new PostGameMenu(player, this.gameManager, lang, menuConfig);
         }
 
         return new NotRunningMenu(player);
