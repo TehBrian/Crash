@@ -5,15 +5,21 @@ import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import dev.kscott.crash.config.Config;
 import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.config.MenuConfig;
+import dev.kscott.crash.config.MenuIconData;
 import dev.kscott.crash.game.GameManager;
 import dev.kscott.crash.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -40,82 +46,23 @@ public class PreGameMenu extends GameMenu {
 
         final int countdown = gameManager.getPreGameCountdown();
 
-        @NonNull Component text;
-        @NonNull Material material;
+        final @NonNull MenuIconData menuIcon = menuConfig.getPreGameIconData(countdown);
+        final @NonNull ItemStack itemStack = menuConfig.getItemStack(menuIcon);
 
-        final @NonNull List<Component> lore = new ArrayList<>();
-
-        switch (countdown) {
-            case 1: {
-                material = Material.RED_STAINED_GLASS_PANE;
-                text = Component.text("Game starting in 1 second...").color(NamedTextColor.RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
-            }
-            break;
-            case 2: {
-                material = Material.RED_STAINED_GLASS_PANE;
-                text = Component.text("Game starting in 2 seconds...").color(NamedTextColor.RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
-            }
-            break;
-            case 3: {
-                material = Material.RED_STAINED_GLASS_PANE;
-                text = Component.text("Game starting in 3 seconds...").color(NamedTextColor.RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
-            }
-            break;
-            case 4: {
-                material = Material.ORANGE_STAINED_GLASS_PANE;
-                text = Component.text("Game starting in 4 seconds...").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
-            }
-            break;
-            case 5: {
-                material = Material.YELLOW_STAINED_GLASS_PANE;
-                text = Component.text("Game starting in 5 seconds...").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
-            }
-            break;
-            case 6: {
-                material = Material.YELLOW_STAINED_GLASS_PANE;
-                text = Component.text("Game starting in 6 seconds...").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
-            }
-            break;
-            case 7: {
-                material = Material.LIME_STAINED_GLASS_PANE;
-                text = Component.text("Game starting in 7 seconds...").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
-
-            }
-            break;
-            case 8: {
-                material = Material.GREEN_STAINED_GLASS_PANE;
-                text = Component.text("Game starting in 8 seconds...").color(NamedTextColor.DARK_GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
-
-            }
-            break;
-            case 9: {
-                material = Material.LIGHT_BLUE_STAINED_GLASS_PANE;
-                text = Component.text("Game starting in 9 seconds...").color(NamedTextColor.AQUA).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
-
-            }
-            break;
-            case 10: {
-                material = Material.BLUE_STAINED_GLASS_PANE;
-                text = Component.text("Game starting in 10 seconds...").color(NamedTextColor.BLUE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
-            }
-            break;
-            default: {
-                material = Material.GRAY_STAINED_GLASS_PANE;
-                text = Component.text("Game starting in ??? seconds...").color(NamedTextColor.GRAY).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
-            }
-            break;
-        }
-
-        lore.add(Component.text("/crash <bet> to place a bet!"));
+        final @NonNull ItemMeta itemMeta = itemStack.getItemMeta();
 
         if (config.isShowBetList()) {
+            @NonNull List<BaseComponent[]> lore = new ArrayList<>();
+
+            if (itemMeta.hasLore()) {
+                // this will bitch about being nullable. ignore it. this will never be null if this code is reached.
+                lore = itemMeta.getLoreComponents();
+            }
+
             if (gameManager.getBetManager().getBets().size() != 0) {
-                lore.add(
-                        Component.text(" ".repeat(10))
-                                .style(Style.style(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false).decorate(TextDecoration.STRIKETHROUGH))
-                                .append(Component.text("BETS").color(NamedTextColor.AQUA).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false))
-                                .append(Component.text(" ".repeat(10)).style(Style.style(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false).decorate(TextDecoration.STRIKETHROUGH)))
-                );
+                final @NonNull Component header = menuConfig.getOtherBetsListHeader();
+
+                lore.add(BungeeComponentSerializer.get().serialize(header));
 
                 final @NonNull Map<UUID, Double> betMap = gameManager.getBetManager().getBets();
 
@@ -131,9 +78,17 @@ public class PreGameMenu extends GameMenu {
 
                     final @NonNull String playerName = betPlayer.getName();
 
-                    lore.add(Component.text(playerName + ": " + bet).color(NamedTextColor.AQUA));
+                    @NonNull Component betComponent = menuConfig.getOtherBetsListHeader();
+                    betComponent = betComponent
+                            .replaceText(TextReplacementConfig.builder().match("{player}").replacement(playerName).build())
+                            .replaceText(TextReplacementConfig.builder().match("{bet}").replacement(Double.toString(bet)).build());
+
+                    lore.add(BungeeComponentSerializer.legacy().serialize(betComponent));
                 }
             }
+
+            itemMeta.setLoreComponents(lore);
+            itemStack.setItemMeta(itemMeta);
         }
 
         final @NonNull StaticPane bgPane = new StaticPane(0, 0, 9, 6);
@@ -142,11 +97,7 @@ public class PreGameMenu extends GameMenu {
 
         final @NonNull StaticPane fgPane = new StaticPane(0, 0, 9, 6);
 
-        fgPane.addItem(new GuiItem(
-                new ItemBuilder(material)
-                        .name(text)
-                        .build()
-        ), 4, 2);
+        fgPane.addItem(new GuiItem(itemStack), 4, 2);
 
         addPane(fgPane);
         addPane(bgPane);
