@@ -122,8 +122,8 @@ public class MenuConfig {
         this.preGameCountdownIcons.clear();
         this.preGameOtherBetsList = this.root.node("pre-game-menu").node("options").node("other-bets-list").node("enabled").getBoolean(true);
         this.preGameOtherBetsAmount = this.root.node("pre-game-menu").node("options").node("other-bets-list").node("amount").getInt(5);
-        this.otherBetsListHeader = this.miniMessage.parse(this.root.node("other-bets-list").node("header").getString(""));
-        this.otherBetsListFormat = this.miniMessage.parse(this.root.node("other-bets-list").node("bet").getString(""));
+        this.otherBetsListHeader = this.miniMessage.parse(this.root.node("other-bets-list").node("header").getString("")).decoration(TextDecoration.ITALIC, false);
+        this.otherBetsListFormat = this.miniMessage.parse(this.root.node("other-bets-list").node("bet").getString("")).decoration(TextDecoration.ITALIC, false);
         final @NonNull ConfigurationNode countdownNode = this.root.node("pre-game-menu").node("countdown-icon");
         if (countdownNode.virtual()) {
             this.plugin.getLogger().warning("There are no countdown icons loaded! You may want to review your configuration.");
@@ -148,7 +148,7 @@ public class MenuConfig {
 
                 final @NonNull ConfigurationNode iconNode = iconEntry.getValue();
 
-                final @Nullable String materialString = iconNode.getString("material");
+                final @Nullable String materialString = iconNode.node("material").getString();
 
                 if (materialString == null) {
                     this.plugin.getLogger().warning("Key " + key + " had no material value. This icon will not be loaded. Please review your configuration.");
