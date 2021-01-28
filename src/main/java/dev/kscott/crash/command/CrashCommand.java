@@ -6,11 +6,14 @@ import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.Inject;
+import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.exception.NotEnoughBalanceException;
 import dev.kscott.crash.game.CrashProvider;
 import dev.kscott.crash.game.GameManager;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
@@ -42,6 +45,10 @@ public class CrashCommand {
      */
     private final @NonNull List<String> commandCompletions;
 
+    private final @NonNull BukkitAudiences audiences;
+
+    private final @NonNull Lang lang;
+
     /**
      * Constructs CrashCommand.
      *
@@ -51,11 +58,15 @@ public class CrashCommand {
     public CrashCommand(
             final @NonNull PaperCommandManager<CommandSender> commandManager,
             final @NonNull CrashProvider crashProvider,
-            final @NonNull GameManager gameManager
+            final @NonNull GameManager gameManager,
+            final @NonNull Lang lang,
+            final @NonNull JavaPlugin plugin
     ) {
         this.commandManager = commandManager;
         this.gameManager = gameManager;
         this.crashProvider = crashProvider;
+        this.lang = lang;
+        this.audiences = BukkitAudiences.create(plugin);
 
         this.commandCompletions = new ArrayList<>();
         commandCompletions.add("history");
@@ -117,9 +128,9 @@ public class CrashCommand {
 
             this.gameManager.getBetManager().placeBet(player, bet);
         } catch (final NumberFormatException ex) {
-            sender.sendMessage("oopsy woopsy that isnt a number");
+            this.audiences.player(player).sendMessage(lang.c("not-a-number"));
         } catch (final NotEnoughBalanceException ex) {
-            sender.sendMessage("u dont got that kinda straps g");
+            this.audiences.player(player).sendMessage(lang.c("not-enough-balance"));
         }
 
     }
