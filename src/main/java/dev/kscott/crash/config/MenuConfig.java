@@ -15,6 +15,7 @@ import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -104,9 +105,7 @@ public class MenuConfig {
         this.runningIcons = new HashMap<>();
 
         // Save config to file if it doesn't already exist
-        // TODO: change this
-        if (true) {
-//        if (!new File(this.plugin.getDataFolder(), "menu.conf").exists()) {
+        if (!new File(this.plugin.getDataFolder(), "menu.conf").exists()) {
             plugin.saveResource("menu.conf", true);
         }
 
