@@ -2,6 +2,7 @@ package dev.kscott.crash.config;
 
 import cloud.commandframework.arguments.standard.IntegerArgument;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -177,14 +178,14 @@ public class MenuConfig {
                 @Nullable List<Component> loreComponent = null;
 
                 if (name != null) {
-                    nameComponent = this.miniMessage.parse(name);
+                    nameComponent = this.miniMessage.parse(name).decoration(TextDecoration.ITALIC, false);
                 }
 
                 if (lore != null) {
                     loreComponent = new ArrayList<>();
 
                     for (final @NonNull String loreString : lore) {
-                        loreComponent.add(miniMessage.parse(loreString));
+                        loreComponent.add(miniMessage.parse(loreString).decoration(TextDecoration.ITALIC, false));
                     }
                 }
 
