@@ -104,25 +104,29 @@ public class MenuIconData {
      * @return an {@link ItemStack} constructed with this icon's values.
      */
     public @NonNull ItemStack getItemStack() {
+        return constructItemStack(material, name, lore);
+    }
+
+    public static ItemStack constructItemStack(final @NonNull Material material, final @Nullable Component name, final @Nullable List<Component> lore) {
         final @NonNull ComponentSerializer<Component, Component, BaseComponent[]> serializer = BungeeComponentSerializer.get();
 
         final @NonNull ItemStack itemStack = new ItemStack(material);
 
-        if (this.name == null && this.lore == null) {
+        if (name == null && lore == null) {
             return itemStack;
         }
 
         final @NonNull ItemMeta meta = Bukkit.getItemFactory().getItemMeta(material);
 
-        if (this.name != null) {
-            final @NonNull BaseComponent[] nameComponents = serializer.serialize(this.name);
+        if (name != null) {
+            final @NonNull BaseComponent[] nameComponents = serializer.serialize(name);
             meta.setDisplayNameComponent(nameComponents);
         }
 
-        if (this.lore != null && this.lore.size() != 0) {
+        if (lore != null && lore.size() != 0) {
             final @NonNull List<BaseComponent[]> loreComponents = new ArrayList<>();
 
-            for (final @Nullable Component component : this.lore) {
+            for (final @Nullable Component component : lore) {
                 if (component == null) continue;
 
                 loreComponents.add(serializer.serialize(component));
