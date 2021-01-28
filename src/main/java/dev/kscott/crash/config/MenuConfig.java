@@ -29,7 +29,6 @@ import java.util.Map;
  */
 public class MenuConfig {
 
-
     /**
      * The MenuIconData to use as a placeholder.
      */
@@ -44,6 +43,11 @@ public class MenuConfig {
      * A Map of Integer to MenuIconData, where Integer is the countdown second, and the MenuIconData is the icon to display for that second.
      */
     private final @NonNull Map<Integer, MenuIconData> preGameCountdownIcons;
+
+    /**
+     * A Map of Double to RunningMenuIconData, where Integer is the minimum multiplier to display icon at, and the MenuIconData is the icon to display.
+     */
+    private final @NonNull Map<Double, RunningMenuIconData> runningIcons;
 
     /**
      * Should the other bets list be displayed on the pre game menu?
@@ -64,6 +68,7 @@ public class MenuConfig {
      * The format to use to display a bet.
      */
     private @MonotonicNonNull Component otherBetsListFormat;
+
     /**
      * JavaPlugin reference.
      */
@@ -86,6 +91,7 @@ public class MenuConfig {
         this.plugin = plugin;
         this.preGameCountdownIcons = new HashMap<>();
         this.placeholderIcon = new MenuIconData(Material.BARRIER, Component.text("Placeholder Icon"));
+        this.runningIcons = new HashMap<>();
 
         // Save config to file if it doesn't already exist
         // TODO: change this
@@ -194,6 +200,94 @@ public class MenuConfig {
                 this.preGameCountdownIcons.put(keyNumber, menuIconData);
             }
         }
+
+        // load running stuff
+        final @NonNull ConfigurationNode runningNode = this.root.node("running-menu").node("crash-icon");
+        if (countdownNode.virtual()) {
+            this.plugin.getLogger().warning("There are no crash icons loaded! You may want to review your configuration.");
+        } else {
+            for (final var iconEntry : runningNode.childrenMap().entrySet()) {
+                final @NonNull Object keyObject = iconEntry.getKey();
+                if (!(keyObject instanceof String)) {
+                    this.plugin.getLogger().warning("Couldn't load key " + keyObject + ": key was not a String. Please review your configuration.");
+                    continue;
+                }
+
+                final @NonNull String key = (String) keyObject;
+
+                double keyNumber;
+
+                try {
+                    keyNumber = Double.parseDouble(key);
+                } catch (final NumberFormatException e) {
+                    this.plugin.getLogger().warning("Key " + key + " could not be parsed into a double. Please review your configuration.");
+                    continue;
+                }
+
+                final @NonNull ConfigurationNode iconNode = iconEntry.getValue();
+
+                final @Nullable String materialString = iconNode.node("material").getString();
+
+                if (materialString == null) {
+                    this.plugin.getLogger().warning("Key " + key + " had no material value. This icon will not be loaded. Please review your configuration.");
+                    continue;
+                }
+
+                final @Nullable Material material = Material.getMaterial(materialString);
+
+                if (material == null) {
+                    this.plugin.getLogger().warning("Material " + materialString + " could not be parsed into a valid material. Please review your configuration.");
+                    continue;
+                }
+                final @Nullable String name = iconNode.node("name").getString();
+
+                @Nullable List<String> lore = null;
+
+                try {
+                    lore = iconNode.node("lore").getList(String.class);
+                } catch (final SerializationException e) {
+                    this.plugin.getLogger().warning("Failed to parse " + key + "'s lore. Please review your configuration.");
+                    this.plugin.getLogger().warning("Stacktrace (if you can't figure it out, send this to bluely):");
+                    e.printStackTrace();
+                }
+
+                @Nullable List<String> loreIfBet = null;
+
+                try {
+                    loreIfBet = iconNode.node("lore-if-bet").getList(String.class);
+                } catch (final SerializationException e) {
+                    this.plugin.getLogger().warning("Failed to parse " + key + "'s lore-if-bet. Please review your configuration.");
+                    this.plugin.getLogger().warning("Stacktrace (if you can't figure it out, send this to bluely):");
+                    e.printStackTrace();
+                }
+
+
+                @Nullable Component nameComponent = null;
+                @Nullable List<Component> loreComponent = null;
+                @Nullable List<Component> loreIfBetComponent = null;
+
+                if (name != null) {
+                    nameComponent = this.miniMessage.parse(name).decoration(TextDecoration.ITALIC, false);
+                }
+
+                if (lore != null) {
+                    loreComponent = new ArrayList<>();
+
+                    for (final @NonNull String loreString : lore) {
+                        loreComponent.add(miniMessage.parse(loreString).decoration(TextDecoration.ITALIC, false));
+                    }
+                }
+
+                if (loreIfBet != null) {
+                    loreIfBetComponent = new ArrayList<>();
+                }
+
+                final @NonNull RunningMenuIconData menuIconData = new RunningMenuIconData(material, nameComponent, loreComponent, loreIfBetComponent);
+
+                this.runningIcons.put(keyNumber, menuIconData);
+            }
+        }
+
     }
 
     /**
