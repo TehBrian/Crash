@@ -55,8 +55,10 @@ public class MenuConfig {
         this.preGameCountdownIcons = new HashMap<>();
 
         // Save config to file if it doesn't already exist
-        if (!new File(this.plugin.getDataFolder(), "menu.conf").exists()) {
-            plugin.saveResource("menu.conf", false);
+        // TODO: change this
+        if (true) {
+//        if (!new File(this.plugin.getDataFolder(), "menu.conf").exists()) {
+            plugin.saveResource("menu.conf", true);
         }
 
         // Load the config
