@@ -291,6 +291,10 @@ public class MenuConfig {
 
                 if (loreIfBet != null) {
                     loreIfBetComponent = new ArrayList<>();
+
+                    for (final @NonNull String loreString : loreIfBet) {
+                        loreIfBetComponent.add(miniMessage.parse(loreString).decoration(TextDecoration.ITALIC, false));
+                    }
                 }
 
                 final @NonNull RunningMenuIconData menuIconData = new RunningMenuIconData(material, nameComponent, loreComponent, loreIfBetComponent);
