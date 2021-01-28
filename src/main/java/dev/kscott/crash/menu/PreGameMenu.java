@@ -23,10 +23,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class PreGameMenu extends GameMenu {
 
@@ -47,11 +44,12 @@ public class PreGameMenu extends GameMenu {
         final int countdown = gameManager.getPreGameCountdown();
 
         final @NonNull MenuIconData menuIcon = menuConfig.getPreGameIconData(countdown);
+
         final @NonNull ItemStack itemStack = menuConfig.getItemStack(menuIcon);
 
         final @NonNull ItemMeta itemMeta = itemStack.getItemMeta();
 
-        if (config.isShowBetList()) {
+        if (menuConfig.isPreGameOtherBetsList()) {
             @NonNull List<BaseComponent[]> lore = new ArrayList<>();
 
             if (itemMeta.hasLore()) {
@@ -64,11 +62,21 @@ public class PreGameMenu extends GameMenu {
 
                 lore.add(BungeeComponentSerializer.get().serialize(header));
 
-                final @NonNull Map<UUID, Double> betMap = gameManager.getBetManager().getBets();
+                final @NonNull Set<Map.Entry<UUID, Double>> betList = gameManager.getBetManager().getBets().entrySet();
 
-                for (final var entry : betMap.entrySet()) {
-                    final @NonNull UUID uuid = entry.getKey();
-                    final double bet = entry.getValue();
+                final @NonNull Iterator<Map.Entry<UUID, Double>> betListIterator = betList.iterator();
+
+                int index = 0;
+
+                while (betListIterator.hasNext()) {
+                    if (index > menuConfig.getPreGameOtherBetsAmount()) {
+                        break;
+                    }
+
+                    final Map.Entry<UUID, Double> betEntry = betListIterator.next();
+
+                    final @NonNull UUID uuid = betEntry.getKey();
+                    final double bet = betEntry.getValue();
 
                     final @Nullable Player betPlayer = Bukkit.getPlayer(uuid);
 
@@ -78,12 +86,14 @@ public class PreGameMenu extends GameMenu {
 
                     final @NonNull String playerName = betPlayer.getName();
 
-                    @NonNull Component betComponent = menuConfig.getOtherBetsListHeader();
+                    @NonNull Component betComponent = menuConfig.getOtherBetsListFormat();
                     betComponent = betComponent
-                            .replaceText(TextReplacementConfig.builder().match("{player}").replacement(playerName).build())
-                            .replaceText(TextReplacementConfig.builder().match("{bet}").replacement(Double.toString(bet)).build());
+                            .replaceText(TextReplacementConfig.builder().match("\\{player\\}").replacement(playerName).build())
+                            .replaceText(TextReplacementConfig.builder().match("\\{bet\\}").replacement(Double.toString(bet)).build());
 
                     lore.add(BungeeComponentSerializer.legacy().serialize(betComponent));
+
+                    index++;
                 }
             }
 
