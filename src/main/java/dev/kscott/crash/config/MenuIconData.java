@@ -32,7 +32,7 @@ public class MenuIconData {
     /**
      * The lore of this icon.
      */
-    private final @Nullable Component[] lore;
+    private final @Nullable List<Component> lore;
 
     /**
      * Constructs the MenuIconData.
@@ -72,7 +72,7 @@ public class MenuIconData {
     public MenuIconData(
             final @NonNull Material material,
             final @Nullable Component name,
-            final @Nullable Component[] lore
+            final @Nullable List<Component> lore
     ) {
         this.material = material;
         this.name = name;
@@ -96,7 +96,7 @@ public class MenuIconData {
     /**
      * @return the lore of this icon.
      */
-    public @Nullable Component[] getLore() {
+    public @Nullable List<Component> getLore() {
         return lore;
     }
 
@@ -119,7 +119,7 @@ public class MenuIconData {
             meta.setDisplayNameComponent(nameComponents);
         }
 
-        if (this.lore != null && this.lore.length != 0) {
+        if (this.lore != null && this.lore.size() != 0) {
             final @NonNull List<BaseComponent[]> loreComponents = new ArrayList<>();
 
             for (final @Nullable Component component : this.lore) {
