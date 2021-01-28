@@ -5,10 +5,15 @@ import dev.kscott.crash.config.Config;
 import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.config.MenuConfig;
 import dev.kscott.crash.menu.MenuManager;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.util.UUID;
 
 /**
  * Manages the game state.
@@ -87,7 +92,7 @@ public class GameManager {
         this.config = config;
 
         this.menuManager = new MenuManager(plugin, commandManager, this, config, lang, menuConfig);
-        this.betManager = new BetManager(plugin, this);
+        this.betManager = new BetManager(plugin, this, lang);
 
         this.currentMultiplier = 0;
         this.crashPoint = 0;
@@ -149,7 +154,7 @@ public class GameManager {
 
                 if (crashPoint < currentMultiplier) {
                     payout();
-                    betManager.reset();
+                    betManager.newGame();
                     cancel();
                     runPostGame();
                 }
@@ -180,7 +185,9 @@ public class GameManager {
      * Pay out bets for players.
      */
     private void payout() {
-
+        for (final @NonNull UUID uuid : this.betManager.getCashedOutPlayers()) {
+            betManager.cashout(Bukkit.getOfflinePlayer(uuid));
+        }
     }
 
     /**
