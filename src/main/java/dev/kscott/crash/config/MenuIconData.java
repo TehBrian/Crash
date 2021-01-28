@@ -55,7 +55,7 @@ public class MenuIconData {
      */
     public MenuIconData(
             final @NonNull Material material,
-            final @NonNull Component name
+            final @Nullable Component name
     ) {
         this.material = material;
         this.name = name;
@@ -71,8 +71,8 @@ public class MenuIconData {
      */
     public MenuIconData(
             final @NonNull Material material,
-            final @NonNull Component name,
-            final @NonNull Component[] lore
+            final @Nullable Component name,
+            final @Nullable Component[] lore
     ) {
         this.material = material;
         this.name = name;
