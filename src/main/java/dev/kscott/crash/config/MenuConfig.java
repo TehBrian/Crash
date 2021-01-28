@@ -9,11 +9,18 @@ import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Stores the GameMenu display configuration.
  */
 public class MenuConfig {
+
+    /**
+     * A Map of Integer to MenuIconData, where Integer is the countdown second, and the MenuIconData is the icon to display for that second.
+     */
+    private final @NonNull Map<Integer, MenuIconData> preGameCountdownIcons;
 
     /**
      * Should the other bets list be displayed on the pre game menu?
@@ -45,6 +52,7 @@ public class MenuConfig {
             final @NonNull Lang lang
     ) {
         this.plugin = plugin;
+        this.preGameCountdownIcons = new HashMap<>();
 
         // Save config to file if it doesn't already exist
         if (!new File(this.plugin.getDataFolder(), "menu.conf").exists()) {
