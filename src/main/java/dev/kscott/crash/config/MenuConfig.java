@@ -35,11 +35,6 @@ public class MenuConfig {
     private final @NonNull MenuIconData placeholderIcon;
 
     /**
-     * Maps {@link MenuIconData}s to their constructed {@link ItemStack}s.
-     */
-    private final @NonNull Map<MenuIconData, ItemStack> menuIconDataItemStackCache;
-
-    /**
      * MiniMessage reference.
      */
     private final @NonNull MiniMessage miniMessage = MiniMessage.get();
@@ -89,7 +84,6 @@ public class MenuConfig {
     ) {
         this.plugin = plugin;
         this.preGameCountdownIcons = new HashMap<>();
-        this.menuIconDataItemStackCache = new HashMap<>();
         this.placeholderIcon = new MenuIconData(Material.BARRIER, Component.text("Placeholder Icon"));
 
         // Save config to file if it doesn't already exist
@@ -213,20 +207,11 @@ public class MenuConfig {
 
     /**
      * Returns an ItemStack for a MenuIconData.
-     * <p>
-     * If the ItemStack is present in the cache, it will returned the cached stack. If not, it will construct it from
-     * {@code iconData}, cache the constructed stack, and return it.
      * @param iconData {@link MenuIconData} to get the ItemStack for.
      * @return ItemStack.
      */
     public @NonNull ItemStack getItemStack(final @NonNull MenuIconData iconData) {
-        if (this.menuIconDataItemStackCache.containsKey(iconData)) {
-            return this.menuIconDataItemStackCache.get(iconData);
-        } else {
-            final @NonNull ItemStack itemStack = iconData.getItemStack();
-            this.menuIconDataItemStackCache.put(iconData, itemStack);
-            return itemStack;
-        }
+        return iconData.getItemStack();
     }
 
     /**
