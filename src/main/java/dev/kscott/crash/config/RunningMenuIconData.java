@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RunningMenuIconData extends MenuIconData {
@@ -22,7 +23,10 @@ public class RunningMenuIconData extends MenuIconData {
         this.didBetLore = didBetLore;
     }
 
-    public @Nullable List<Component> getDidBetLore() {
-        return this.didBetLore;
+    /**
+     * @return the lore of this icon to display if the player viewing has a bet placed. If no lore was present, it will be an empty list.
+     */
+    public @NonNull List<Component> getDidBetLore() {
+        return didBetLore == null ? new ArrayList<>() : new ArrayList<>(this.didBetLore);
     }
 }

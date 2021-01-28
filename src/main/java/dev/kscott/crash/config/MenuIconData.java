@@ -94,10 +94,10 @@ public class MenuIconData {
     }
 
     /**
-     * @return the lore of this icon.
+     * @return the lore of this icon. If no lore was present, it will be an empty list.
      */
-    public @Nullable List<Component> getLore() {
-        return lore;
+    public @NonNull List<Component> getLore() {
+        return lore == null ? new ArrayList<>() : new ArrayList<>(this.lore);
     }
 
     /**
