@@ -22,6 +22,10 @@ public final class CrashPlugin extends JavaPlugin {
      */
     @Override
     public void onEnable() {
+        if (this.getServer().getPluginManager().getPlugin("Vault") == null) {
+            throw new RuntimeException("The Vault plugin is not installed. Please install it!");
+        }
+
         final @NonNull Injector injector = Guice.createInjector(
                 new PluginModule(this),
                 new CommandModule(this),
