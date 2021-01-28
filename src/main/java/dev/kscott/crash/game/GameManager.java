@@ -7,11 +7,9 @@ import dev.kscott.crash.config.MenuConfig;
 import dev.kscott.crash.menu.MenuManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.UUID;
 
@@ -161,7 +159,7 @@ public class GameManager {
                     currentMultiplier = Math.round((currentMultiplier + (currentMultiplier * config.getCrashSpeedMultiplier())) * 100.0) / 100.0;
                 }
 
-                if (crashPoint < currentMultiplier) {
+                if (crashPoint <= currentMultiplier) {
                     payout();
                     betManager.newGame();
                     cancel();
