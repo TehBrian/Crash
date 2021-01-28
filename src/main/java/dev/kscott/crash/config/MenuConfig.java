@@ -35,6 +35,11 @@ public class MenuConfig {
     private final @NonNull MenuIconData placeholderIcon;
 
     /**
+     * The MenuIconData to use as a placeholder.
+     */
+    private final @NonNull RunningMenuIconData runningPlaceholderIcon;
+
+    /**
      * MiniMessage reference.
      */
     private final @NonNull MiniMessage miniMessage = MiniMessage.get();
@@ -91,6 +96,7 @@ public class MenuConfig {
         this.plugin = plugin;
         this.preGameCountdownIcons = new HashMap<>();
         this.placeholderIcon = new MenuIconData(Material.BARRIER, Component.text("Placeholder Icon"));
+        this.runningPlaceholderIcon = new RunningMenuIconData(Material.BARRIER, Component.text("Placeholder Icon"), List.of(), List.of());
         this.runningIcons = new HashMap<>();
 
         // Save config to file if it doesn't already exist
@@ -298,6 +304,22 @@ public class MenuConfig {
      */
     public @NonNull MenuIconData getPreGameIconData(final int number) {
         return this.preGameCountdownIcons.getOrDefault(number, placeholderIcon);
+    }
+
+    /**
+     * Returns a RunningMenuIconData for the given multiplier value.
+     * @param multiplier Multiplier to get MenuIconData for.
+     * @return RunningMenuIconData.
+     */
+    public @NonNull RunningMenuIconData getRunningIconData(final double multiplier) {
+        for (final var entry : runningIcons.entrySet()) {
+            double entryMultiplier = entry.getKey();
+            if (multiplier >= entryMultiplier) {
+                return entry.getValue();
+            }
+        }
+
+        return runningPlaceholderIcon;
     }
 
     /**
