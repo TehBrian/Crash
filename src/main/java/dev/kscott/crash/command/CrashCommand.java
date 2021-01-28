@@ -116,9 +116,9 @@ public class CrashCommand {
             final long bet = Long.parseLong(argument);
 
             this.gameManager.getBetManager().placeBet(player, bet);
-        } catch (final @NonNull NumberFormatException ex) {
+        } catch (final NumberFormatException ex) {
             sender.sendMessage("oopsy woopsy that isnt a number");
-        } catch (final @NonNull NotEnoughBalanceException ex) {
+        } catch (final NotEnoughBalanceException ex) {
             sender.sendMessage("u dont got that kinda straps g");
         }
 
