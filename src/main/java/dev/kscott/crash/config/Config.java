@@ -18,32 +18,32 @@ public class Config {
     /**
      * Should the bet list be displayed in the crash game menus?
      */
-    private boolean showBetList = true;
+    private final boolean showBetList = true;
 
     /**
      * How many bets to display on the crash icon bet list?
      */
-    private int otherPlayersListAmount = 5;
+    private final int otherPlayersListAmount = 5;
 
     /**
      * How long will the post-game menu run?
      */
-    private int countdownTime = 10;
+    private final int countdownTime = 10;
 
     /**
      * How long will the post-game menu run?
      */
-    private int postGameTime = 5;
+    private final int postGameTime = 5;
 
     /**
      * How often will the crash game tick? (in Minecrft ticks)
      */
-    private int gameTick = 5;
+    private final int gameTick = 5;
 
     /**
      * How fast will the multiplier increase?
      */
-    private double crashSpeedMultiplier = 0.03;
+    private final double crashSpeedMultiplier = 0.03;
 
     /**
      * JavaPlugin reference.

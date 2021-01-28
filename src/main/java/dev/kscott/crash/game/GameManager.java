@@ -10,9 +10,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 /**
  * Manages the game state.
  */

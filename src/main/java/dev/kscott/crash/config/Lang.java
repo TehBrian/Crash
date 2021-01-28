@@ -76,6 +76,7 @@ public class Lang {
 
     /**
      * Gets the String value at {@code key} and returns a parsed String.
+     *
      * @param key path to value.
      * @return String
      */
@@ -129,6 +130,7 @@ public class Lang {
 
     /**
      * Formats a {@code double} value to currency.
+     *
      * @param amount Amount to format.
      * @return Formatted String.
      */

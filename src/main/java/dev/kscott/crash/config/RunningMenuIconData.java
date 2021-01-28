@@ -2,7 +2,6 @@ package dev.kscott.crash.config;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
