@@ -55,6 +55,16 @@ public class MenuConfig {
     private final @NonNull Map<Double, RunningMenuIconData> runningIcons;
 
     /**
+     * Should the other bets list be displayed on the running menu?
+     */
+    private boolean runningOtherBetsList = true;
+
+    /**
+     * How many other bets should be displayed on the running menu?
+     */
+    private int runningOtherBetsAmount = 5;
+
+    /**
      * Should the other bets list be displayed on the pre game menu?
      */
     private boolean preGameOtherBetsList = true;
@@ -208,6 +218,8 @@ public class MenuConfig {
         }
 
         // load running stuff
+        this.runningOtherBetsList = this.root.node("running-menu").node("options").node("other-bets-list").node("enabled").getBoolean(true);
+        this.runningOtherBetsAmount = this.root.node("running-menu").node("options").node("other-bets-list").node("amount").getInt(5);
         final @NonNull ConfigurationNode runningNode = this.root.node("running-menu").node("crash-icon");
         if (countdownNode.virtual()) {
             this.plugin.getLogger().warning("There are no crash icons loaded! You may want to review your configuration.");
@@ -357,5 +369,19 @@ public class MenuConfig {
      */
     public int getPreGameOtherBetsAmount() {
         return preGameOtherBetsAmount;
+    }
+
+    /**
+     * @return true if the bet list is enabled for the running bet list, false if not.
+     */
+    public boolean isRunningOtherBetsList() {
+        return runningOtherBetsList;
+    }
+
+    /**
+     * @return how many other bets to display for the running bets list.
+     */
+    public int getRunningOtherBetsAmount() {
+        return runningOtherBetsAmount;
     }
 }
