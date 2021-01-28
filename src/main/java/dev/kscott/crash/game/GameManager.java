@@ -147,7 +147,7 @@ public class GameManager {
             public void run() {
                 // thanks kevin u straight g
                 if (crashPoint > currentMultiplier) {
-                    currentMultiplier = BigDecimal.valueOf(currentMultiplier + (currentMultiplier * config.getCrashSpeedMultiplier())).setScale(2, RoundingMode.HALF_DOWN).doubleValue();
+                    currentMultiplier = Math.round((currentMultiplier + (currentMultiplier * config.getCrashSpeedMultiplier())) * 100.0) / 100.0;
                 }
 
                 if (crashPoint < currentMultiplier) {
