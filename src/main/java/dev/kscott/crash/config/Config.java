@@ -121,4 +121,11 @@ public class Config {
     public double getCrashSpeedMultiplier() {
         return crashSpeedMultiplier;
     }
+
+    /**
+     * @return {@link this#autoStart}
+     */
+    public boolean isAutoStart() {
+        return autoStart;
+    }
 }
