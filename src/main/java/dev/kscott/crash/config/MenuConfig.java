@@ -4,6 +4,7 @@ import cloud.commandframework.arguments.standard.IntegerArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -14,6 +15,7 @@ import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
 
+import java.awt.*;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -25,6 +27,13 @@ import java.util.Map;
  * Stores the GameMenu display configuration.
  */
 public class MenuConfig {
+
+    private final @NonNull MenuIconData placeholderIcon;
+
+    /**
+     * Maps {@link MenuIconData}s to their constructed {@link ItemStack}s.
+     */
+    private final @NonNull Map<MenuIconData, ItemStack> menuIconDataItemStackCache;
 
     /**
      * MiniMessage reference.
@@ -67,6 +76,8 @@ public class MenuConfig {
     ) {
         this.plugin = plugin;
         this.preGameCountdownIcons = new HashMap<>();
+        this.menuIconDataItemStackCache = new HashMap<>();
+        this.placeholderIcon = new MenuIconData(Material.BARRIER, Component.text("Placeholder Icon"));
 
         // Save config to file if it doesn't already exist
         // TODO: change this
@@ -179,10 +190,28 @@ public class MenuConfig {
      * Returns a MenuIconData for the given integer.
      *
      * @param number Key of the MenuIconData. Seconds left on the pre game countdown.
-     * @return MenuIconData. May be null.
+     * @return MenuIconData. If the MenuIconData is not present for {@code number}, it will return a placeholder MenuIconData.
      */
-    public @Nullable MenuIconData getPreGameIconData(final int number) {
+    public @NonNull MenuIconData getPreGameIconData(final int number) {
         return this.preGameCountdownIcons.get(number);
+    }
+
+    /**
+     * Returns an ItemStack for a MenuIconData.
+     * <p>
+     * If the ItemStack is present in the cache, it will returned the cached stack. If not, it will construct it from
+     * {@code iconData}, cache the constructed stack, and return it.
+     * @param iconData {@link MenuIconData} to get the ItemStack for.
+     * @return ItemStack.
+     */
+    public @NonNull ItemStack getItemStack(final @NonNull MenuIconData iconData) {
+        if (this.menuIconDataItemStackCache.containsKey(iconData)) {
+            return this.menuIconDataItemStackCache.get(iconData);
+        } else {
+            final @NonNull ItemStack itemStack = iconData.getItemStack();
+            this.menuIconDataItemStackCache.put(iconData, itemStack);
+            return itemStack;
+        }
     }
 
 }
