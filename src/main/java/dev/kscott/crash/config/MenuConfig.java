@@ -242,4 +242,18 @@ public class MenuConfig {
     public @NonNull Component getOtherBetsListFormat() {
         return otherBetsListFormat;
     }
+
+    /**
+     * @return true if the bet list is enabled for the pre game bet list, false if not.
+     */
+    public boolean isPreGameOtherBetsList() {
+        return preGameOtherBetsList;
+    }
+
+    /**
+     * @return how many other bets to display for the pre game bets list.
+     */
+    public int getPreGameOtherBetsAmount() {
+        return preGameOtherBetsAmount;
+    }
 }
