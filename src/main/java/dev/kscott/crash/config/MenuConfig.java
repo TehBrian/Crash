@@ -28,15 +28,6 @@ import java.util.Map;
  */
 public class MenuConfig {
 
-    /**
-     * The header to display for the other-bets-list.
-     */
-    private @MonotonicNonNull Component otherBetsListHeader;
-
-    /**
-     * The format to use to display a bet.
-     */
-    private @MonotonicNonNull Component otherBetsListFormat;
 
     /**
      * The MenuIconData to use as a placeholder.
@@ -68,6 +59,15 @@ public class MenuConfig {
      */
     private int preGameOtherBetsAmount = 5;
 
+    /**
+     * The header to display for the other-bets-list.
+     */
+    private @MonotonicNonNull Component otherBetsListHeader;
+
+    /**
+     * The format to use to display a bet.
+     */
+    private @MonotonicNonNull Component otherBetsListFormat;
     /**
      * JavaPlugin reference.
      */
