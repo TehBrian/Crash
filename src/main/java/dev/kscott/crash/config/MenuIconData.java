@@ -1,6 +1,7 @@
 package dev.kscott.crash.config;
 
 import dev.kscott.crash.CrashPlugin;
+import dev.kscott.crash.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
@@ -121,35 +122,11 @@ public class MenuIconData {
         final @NonNull ItemMeta meta = Bukkit.getItemFactory().getItemMeta(material);
 
         if (name != null) {
-            final @NonNull BaseComponent[] nameComponents = serializer.serialize(name);
-            try {
-                meta.setDisplayNameComponent(nameComponents);
-            } catch (final NoSuchMethodError e) {
-                meta.setDisplayName(LegacyComponentSerializer.legacyAmpersand().serialize(name));
-            }
+            ItemBuilder.setName(meta, name);
         }
 
         if (lore != null && lore.size() != 0) {
-            final @NonNull List<BaseComponent[]> loreComponents = new ArrayList<>();
-
-            for (final @Nullable Component component : lore) {
-                if (component == null) continue;
-
-                loreComponents.add(serializer.serialize(component));
-            }
-
-            if (CrashPlugin.IS_DEPRECATED) {
-                final @NonNull List<String> loreStrings = new ArrayList<>();
-                for (final @Nullable Component component : lore) {
-                    if (component == null) continue;
-
-                    loreStrings.add(LegacyComponentSerializer.legacyAmpersand().serialize(component));
-                }
-
-                meta.setLore(loreStrings);
-            } else {
-                meta.setLoreComponents(loreComponents);
-            }
+            ItemBuilder.setLore(meta, lore);
         }
 
         itemStack.setItemMeta(meta);

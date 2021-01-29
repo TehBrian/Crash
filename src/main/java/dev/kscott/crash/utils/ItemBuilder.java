@@ -1,5 +1,6 @@
 package dev.kscott.crash.utils;
 
+import com.google.common.collect.Lists;
 import dev.kscott.crash.CrashPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
@@ -14,9 +15,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import javax.annotation.Nonnegative;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * ItemBuilder class.
@@ -103,11 +106,7 @@ public class ItemBuilder {
             this.meta = Bukkit.getItemFactory().getItemMeta(this.item.getType());
         }
 
-        if (CrashPlugin.IS_DEPRECATED) {
-            this.meta.setDisplayName(LegacyComponentSerializer.legacyAmpersand().serialize(component));
-        } else {
-            this.meta.setDisplayNameComponent(BungeeComponentSerializer.legacy().serialize(component));
-        }
+        ItemBuilder.setName(this.meta, component);
 
         return this;
     }
@@ -133,14 +132,8 @@ public class ItemBuilder {
      * @return the builder
      */
     public @NonNull ItemBuilder loreComponent(final @NonNull List<Component> lines) {
-        final @NonNull List<BaseComponent[]> componentLore = new ArrayList<>();
-
-        for (final @NonNull Component component : lines) {
-            componentLore.add(BungeeComponentSerializer.legacy().serialize(component));
-        }
-
         if (this.meta != null) {
-            this.meta.setLoreComponents(componentLore);
+            ItemBuilder.setLore(this.meta, lines);
         }
 
         return this;
@@ -175,17 +168,7 @@ public class ItemBuilder {
      */
     public @NonNull ItemBuilder loreAdd(final @NonNull Component... lines) {
         if (this.meta != null) {
-            List<BaseComponent[]> lore = this.meta.getLoreComponents();
-
-            if (lore == null) {
-                lore = new ArrayList<>();
-            }
-
-            for (final @NonNull Component component : lines) {
-                lore.add(BungeeComponentSerializer.legacy().serialize(component));
-            }
-
-            this.meta.setLoreComponents(lore);
+            ItemBuilder.setLore(this.meta, Arrays.asList(lines));
         }
 
         return this;
@@ -199,17 +182,7 @@ public class ItemBuilder {
      */
     public @NonNull ItemBuilder loreAdd(final @NonNull List<Component> lines) {
         if (this.meta != null) {
-            List<BaseComponent[]> lore = this.meta.getLoreComponents();
-
-            if (lore == null) {
-                lore = new ArrayList<>();
-            }
-
-            for (final @NonNull Component component : lines) {
-                lore.add(BungeeComponentSerializer.legacy().serialize(component));
-            }
-
-            this.meta.setLoreComponents(lore);
+            ItemBuilder.setLore(meta, lines);
         }
 
         return this;
@@ -274,5 +247,69 @@ public class ItemBuilder {
         }
 
         return this;
+    }
+
+    /**
+     * Sets the lore of an ItemMeta.
+     *
+     * @param itemMeta   ItemMeta to apply lore to.
+     * @param components List of Components to use when setting lore.
+     */
+    public static void setLore(final @NonNull ItemMeta itemMeta, final @NonNull List<Component> components) {
+        final @NonNull List<String> lore = new ArrayList<>();
+
+        for (final @NonNull Component component : components) {
+            lore.add(LegacyComponentSerializer.legacySection().serialize(component));
+        }
+
+        itemMeta.setLore(lore);
+    }
+
+    /**
+     * Gets the lore of an ItemMeta.
+     *
+     * @param itemMeta ItemMeta to get lore of.
+     * @return A List of Components for the lore. May be empty if there was no lore on the ItemMeta.
+     */
+    public static @NonNull List<Component> getLore(final @NonNull ItemMeta itemMeta) {
+        if (!itemMeta.hasLore()) {
+            return new ArrayList<>();
+        }
+
+        final @NonNull List<String> lore = Objects.requireNonNull(itemMeta.getLore());
+
+        final @NonNull List<Component> loreComponents = new ArrayList<>();
+
+        if (lore.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        for (final @NonNull String loreString : lore) {
+            loreComponents.add(LegacyComponentSerializer.legacyAmpersand().deserialize(loreString));
+        }
+
+        return loreComponents;
+    }
+
+    /**
+     * Sets the name of an ItemMeta.
+     * @param itemMeta ItemMeta to set name for.
+     * @param component Component to use as the display name.
+     */
+    public static void setName(final @NonNull ItemMeta itemMeta, final @NonNull Component component) {
+        itemMeta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component));
+    }
+
+    /**
+     * Gets the display name of an ItemMeta.
+     * @param itemMeta ItemMeta to get display name.
+     * @return
+     */
+    public static @NonNull Component getName(final @NonNull ItemMeta itemMeta) {
+        if (itemMeta.hasDisplayName()) {
+            return BungeeComponentSerializer.get().deserialize(itemMeta.getDisplayNameComponent());
+        }
+
+        return Component.text("");
     }
 }

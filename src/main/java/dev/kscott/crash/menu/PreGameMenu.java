@@ -14,8 +14,6 @@ import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.chat.BaseComponentSerializer;
-import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -51,17 +49,12 @@ public class PreGameMenu extends GameMenu {
         final @NonNull ItemMeta itemMeta = itemStack.getItemMeta();
 
         if (menuConfig.isPreGameOtherBetsList()) {
-            @NonNull List<BaseComponent[]> lore = new ArrayList<>();
-
-            if (itemMeta.hasLore()) {
-                // this will bitch about being nullable. ignore it. this will never be null if this code is reached.
-                lore = Objects.requireNonNull(itemMeta.getLoreComponents());
-            }
+            @NonNull List<Component> lore = ItemBuilder.getLore(itemMeta);
 
             if (gameManager.getBetManager().getBets().size() != 0) {
                 final @NonNull Component header = menuConfig.getOtherBetsListHeader();
 
-                lore.add(BungeeComponentSerializer.get().serialize(header));
+                lore.add(header);
 
                 final @NonNull Set<Map.Entry<UUID, Double>> betList = gameManager.getBetManager().getBets().entrySet();
 
@@ -92,21 +85,13 @@ public class PreGameMenu extends GameMenu {
                             .replaceText(TextReplacementConfig.builder().match("\\{player\\}").replacement(playerName).build())
                             .replaceText(TextReplacementConfig.builder().match("\\{bet\\}").replacement(lang.formatCurrency(bet)).build());
 
-                    lore.add(BungeeComponentSerializer.legacy().serialize(betComponent));
+                    lore.add(betComponent);
 
                     index++;
                 }
             }
 
-            if (CrashPlugin.IS_DEPRECATED) {
-                final @NonNull List<String> loreString = new ArrayList<>();
-                for (final @NonNull BaseComponent[] loreBaseComponents : lore) {
-                    loreString.add(ComponentSerializer.toString(loreString));
-                }
-                itemMeta.setLore(loreString);
-            } else {
-                itemMeta.setLoreComponents(lore);
-            }
+            ItemBuilder.setLore(itemMeta, lore);
 
             itemStack.setItemMeta(itemMeta);
         }
