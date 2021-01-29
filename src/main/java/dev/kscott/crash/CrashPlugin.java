@@ -37,5 +37,7 @@ public final class CrashPlugin extends JavaPlugin {
         injector.getInstance(CrashAdminCommand.class);
 
         this.getServer().getPluginManager().registerEvents(injector.getInstance(InventoryCloseListener.class), this);
+
+        new Metrics(this, 10168);
     }
 }
