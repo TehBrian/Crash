@@ -87,7 +87,7 @@ public class MenuManager {
      * Updates all open game menus.
      */
     public void updateMenus() {
-        for (final @NonNull InventoryHolder holder : openInventories) {
+        for (final @NonNull InventoryHolder holder : new ArrayList<>(openInventories)) {
             final @NonNull HumanEntity entity = holder.getInventory().getViewers().get(0);
             if (entity instanceof Player) {
                 showGameMenu((Player) entity);
