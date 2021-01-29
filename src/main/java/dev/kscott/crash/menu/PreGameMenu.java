@@ -2,6 +2,7 @@ package dev.kscott.crash.menu;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import dev.kscott.crash.CrashPlugin;
 import dev.kscott.crash.config.Config;
 import dev.kscott.crash.config.Lang;
 import dev.kscott.crash.config.MenuConfig;
@@ -11,7 +12,10 @@ import dev.kscott.crash.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.chat.BaseComponentSerializer;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -51,7 +55,7 @@ public class PreGameMenu extends GameMenu {
 
             if (itemMeta.hasLore()) {
                 // this will bitch about being nullable. ignore it. this will never be null if this code is reached.
-                lore = itemMeta.getLoreComponents();
+                lore = Objects.requireNonNull(itemMeta.getLoreComponents());
             }
 
             if (gameManager.getBetManager().getBets().size() != 0) {
@@ -94,7 +98,16 @@ public class PreGameMenu extends GameMenu {
                 }
             }
 
-            itemMeta.setLoreComponents(lore);
+            if (CrashPlugin.IS_DEPRECATED) {
+                final @NonNull List<String> loreString = new ArrayList<>();
+                for (final @NonNull BaseComponent[] loreBaseComponents : lore) {
+                    loreString.add(ComponentSerializer.toString(loreString));
+                }
+                itemMeta.setLore(loreString);
+            } else {
+                itemMeta.setLoreComponents(lore);
+            }
+
             itemStack.setItemMeta(itemMeta);
         }
 

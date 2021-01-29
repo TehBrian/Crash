@@ -1,7 +1,9 @@
 package dev.kscott.crash.utils;
 
+import dev.kscott.crash.CrashPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -101,7 +103,11 @@ public class ItemBuilder {
             this.meta = Bukkit.getItemFactory().getItemMeta(this.item.getType());
         }
 
-        this.meta.setDisplayNameComponent(BungeeComponentSerializer.legacy().serialize(component));
+        if (CrashPlugin.IS_DEPRECATED) {
+            this.meta.setDisplayName(LegacyComponentSerializer.legacyAmpersand().serialize(component));
+        } else {
+            this.meta.setDisplayNameComponent(BungeeComponentSerializer.legacy().serialize(component));
+        }
 
         return this;
     }

@@ -18,10 +18,17 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public final class CrashPlugin extends JavaPlugin {
 
     /**
+     * If true, this server is Spigot or CB.
+     * If false, it's something else.
+     */
+    public static boolean IS_DEPRECATED;;
+
+    /**
      * Constructs the injector and initializes some stuff.
      */
     @Override
     public void onEnable() {
+        IS_DEPRECATED = this.getServer().getVersion().contains("Spigot") || this.getServer().getVersion().contains("Craftbukkit");
         if (this.getServer().getPluginManager().getPlugin("Vault") == null) {
             throw new RuntimeException("The Vault plugin is not installed. Please install it!");
         }
