@@ -39,7 +39,7 @@ public class ItemBuilder {
     /**
      * Construct ItemBuilder with an ItemStack.
      *
-     * @param item ItemStack to base the the new item from
+     * @param item ItemStack to base the new item from
      */
     public ItemBuilder(final @NonNull ItemStack item) {
         this.item = item.clone();
